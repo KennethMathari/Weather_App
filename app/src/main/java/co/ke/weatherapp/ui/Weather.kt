@@ -17,14 +17,15 @@ import co.ke.weatherapp.ui.viewmodel.WeatherViewModel
 @Composable
 fun Weather(
     navController: NavHostController = rememberNavController(),
-    weatherViewModel: WeatherViewModel = viewModel()
+    //weatherViewModel: WeatherViewModel = viewModel(),
+
 ){
-    val weatherState: WeatherState by weatherViewModel.weatherState.collectAsStateWithLifecycle()
+    //val weatherState: WeatherState by weatherViewModel.weatherState.collectAsStateWithLifecycle()
     
     NavHost(navController = navController, startDestination = WeatherRoutes.Weather.name){
         
         composable(route = WeatherRoutes.Weather.name){
-            WeatherScreen(weatherState = weatherState)
+            WeatherScreen()
         }
     }
 

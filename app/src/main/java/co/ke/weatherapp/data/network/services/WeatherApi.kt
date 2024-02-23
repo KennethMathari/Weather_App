@@ -1,11 +1,10 @@
 package co.ke.weatherapp.data.network.services
 
-import co.ke.weatherapp.data.network.models.CurrentWeather
+import co.ke.weatherapp.data.network.dto.CurrentWeather
 import retrofit2.http.GET
-import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface CurrentWeatherService {
+interface WeatherApi {
 
     @GET("weather")
     suspend fun getCurrentWeather(

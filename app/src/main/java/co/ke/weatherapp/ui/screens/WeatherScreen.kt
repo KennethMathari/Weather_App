@@ -5,10 +5,7 @@ import androidx.compose.runtime.Composable
 import co.ke.weatherapp.ui.state.WeatherState
 
 @Composable
-fun WeatherScreen(
-    weatherState: WeatherState
-){
+fun WeatherScreen(){
 
-    weatherState.currentWeather?.let { Text(text = it.name) }
     
 }

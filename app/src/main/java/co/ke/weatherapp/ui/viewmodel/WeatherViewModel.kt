@@ -3,7 +3,7 @@ package co.ke.weatherapp.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.ke.weatherapp.data.network.utils.NetworkResult
-import co.ke.weatherapp.data.repository.CurrentWeatherRepository
+import co.ke.weatherapp.data.repository.WeatherRepositoryImpl
 import co.ke.weatherapp.ui.state.WeatherState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -17,17 +17,19 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WeatherViewModel @Inject constructor(
-    private val currentWeatherRepository: CurrentWeatherRepository
+    private val currentWeatherRepository: WeatherRepositoryImpl
 ) : ViewModel() {
 
     private val _weatherState = MutableStateFlow(WeatherState())
     val weatherState: StateFlow<WeatherState> get() = _weatherState.asStateFlow()
 
+    val apiKey = System.getProperty("api.key")
+
 
     //    init {
 //        getCurrentWeather()
 //    }
-    private fun getCurrentWeather(latitude: Double, longitude: Double, apiKey: String) {
+    private fun getCurrentWeather(latitude: Double, longitude: Double) {
         viewModelScope.launch(Dispatchers.IO) {
 
             currentWeatherRepository.getCurrentWeather(

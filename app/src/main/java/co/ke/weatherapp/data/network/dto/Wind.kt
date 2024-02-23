@@ -1,4 +1,4 @@
-package co.ke.weatherapp.data.network.models
+package co.ke.weatherapp.data.network.dto
 
 
 import com.squareup.moshi.Json
