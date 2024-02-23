@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.buffer
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,12 +18,16 @@ import javax.inject.Inject
 @HiltViewModel
 class WeatherViewModel @Inject constructor(
     private val currentWeatherRepository: CurrentWeatherRepository
-): ViewModel() {
+) : ViewModel() {
 
     private val _weatherState = MutableStateFlow(WeatherState())
     val weatherState: StateFlow<WeatherState> get() = _weatherState.asStateFlow()
 
-    private fun getCurrentWeather(latitude: Double, longitude:Double, apiKey: String){
+
+    //    init {
+//        getCurrentWeather()
+//    }
+    private fun getCurrentWeather(latitude: Double, longitude: Double, apiKey: String) {
         viewModelScope.launch(Dispatchers.IO) {
 
             currentWeatherRepository.getCurrentWeather(
@@ -32,24 +35,26 @@ class WeatherViewModel @Inject constructor(
                 longitude,
                 apiKey
             ).buffer()
-                .collect{result ->
-                    when(result){
-                        is NetworkResult.Success ->{
-                            _weatherState.update {currentWeatherState->
+                .collect { result ->
+                    when (result) {
+                        is NetworkResult.Success -> {
+                            _weatherState.update { currentWeatherState ->
                                 currentWeatherState.copy(
                                     currentWeather = result.data
                                 )
                             }
                         }
-                        is NetworkResult.Loading ->{
-                            _weatherState.update { currentWeatherState->
+
+                        is NetworkResult.Loading -> {
+                            _weatherState.update { currentWeatherState ->
                                 currentWeatherState.copy(
                                     isLoading = true
                                 )
                             }
                         }
-                        is NetworkResult.Error ->{
-                            _weatherState.update { currentWeatherState->
+
+                        is NetworkResult.Error -> {
+                            _weatherState.update { currentWeatherState ->
                                 currentWeatherState.copy(
                                     errorMessage = result.errorDetails.message
                                 )
@@ -61,4 +66,6 @@ class WeatherViewModel @Inject constructor(
 
         }
     }
+
+
 }
