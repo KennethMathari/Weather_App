@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,7 +36,9 @@ fun WeatherScreen(
     weatherState: WeatherState,
     modifier: Modifier = Modifier
 ){
-    weatherState.currentWeather?.let { currentWeather ->
+    weatherState.weatherInfo?.let { weatherInfo ->
+
+
 
         Column(
             modifier = Modifier.fillMaxSize()
@@ -83,7 +87,7 @@ fun WeatherScreen(
                             modifier = modifier.align(Alignment.Center)
                         ) {
                             Text(
-                                text = currentWeather.main.temp!!.convertKelvinToCelsius(),
+                                text = weatherInfo.currentWeather!!.main.temp!!.convertKelvinToCelsius(),
                                 color = Color.White,
                                 fontWeight = FontWeight.Bold,
                                 style = TextStyle(
@@ -91,7 +95,7 @@ fun WeatherScreen(
                                 )
                             )
                             Text(
-                                text = currentWeather.weather[0].main ,
+                                text = weatherInfo.currentWeather.weather[0].main ,
                                 color = Color.White,
                             )
                         }
@@ -112,26 +116,27 @@ fun WeatherScreen(
 
                     Row(
                         horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = modifier.fillMaxWidth()
+                        modifier = modifier
+                            .fillMaxWidth()
                             .padding(10.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ){
                         Column {
-                            Text(text = currentWeather.main.tempMin!!.convertKelvinToCelsius())
+                            Text(text = weatherInfo.currentWeather!!.main.tempMin!!.convertKelvinToCelsius())
                             Text(text = "min")
                         }
 
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(text = currentWeather.main.temp!!.convertKelvinToCelsius())
+                            Text(text = weatherInfo.currentWeather!!.main.temp!!.convertKelvinToCelsius())
                             Text(text = "Current")
                         }
 
                         Column(
                             horizontalAlignment = Alignment.End
                         ){
-                            Text(text = currentWeather.main.tempMax!!.convertKelvinToCelsius())
+                            Text(text = weatherInfo.currentWeather!!.main.tempMax!!.convertKelvinToCelsius())
                             Text(text = "max")
                         }
                     }
@@ -148,13 +153,22 @@ fun WeatherScreen(
                     modifier = Modifier
                         .weight(1f)
                         .fillMaxHeight()
-                        .background(Color.Blue)
+                        //.background(Color.Blue)
                 ) {
-                    Text(
-                        text = "Third Row",
-                        color = Color.White,
-                        modifier = Modifier.align(Alignment.Center)
-                    )
+//                    Text(
+//                        text = "Third Row",
+//                        color = Color.White,
+//                        modifier = Modifier.align(Alignment.Center)
+//                    )
+                    LazyColumn(
+                        modifier = modifier.padding(8.dp)
+                    ){
+                        weatherInfo.weatherForecast?.let {
+                            items(it.list){it->
+                                Text(text = it.dt.toString())
+                            }
+                        }
+                    }
                 }
             }
         }

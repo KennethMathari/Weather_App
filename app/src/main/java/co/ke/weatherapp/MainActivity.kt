@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
         permissionLauncher = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
         ) {
-            weatherViewModel.getCurrentWeather()
+            weatherViewModel.getWeatherInfo()
         }
 
         permissionLauncher.launch(
