@@ -32,8 +32,7 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
         }
     }
@@ -70,10 +69,10 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     // Retrofit
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
     //Moshi
-    implementation ("com.squareup.moshi:moshi-kotlin:1.12.0")
-    implementation ("com.squareup.retrofit2:converter-moshi:2.9.0")
+    implementation("com.squareup.moshi:moshi-kotlin:1.12.0")
+    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
     //Hilt
     implementation("com.google.dagger:hilt-android:2.50")
     kapt("com.google.dagger:hilt-android-compiler:2.50")

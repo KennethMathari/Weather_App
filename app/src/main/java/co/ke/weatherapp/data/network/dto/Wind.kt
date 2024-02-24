@@ -7,9 +7,9 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class Wind(
     @Json(name = "deg")
-    val deg: Int,
+    val deg: Int?,
     @Json(name = "gust")
-    val gust: Double,
+    val gust: Double?,
     @Json(name = "speed")
-    val speed: Double
+    val speed: Double?
 )
