@@ -1,7 +1,9 @@
 package co.ke.weatherapp.ui.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.ke.weatherapp.BuildConfig
 import co.ke.weatherapp.data.network.utils.NetworkResult
 import co.ke.weatherapp.domain.location.LocationTracker
 import co.ke.weatherapp.domain.repository.WeatherRepository
@@ -27,28 +29,29 @@ class WeatherViewModel @Inject constructor(
     private val _weatherState = MutableStateFlow(WeatherState())
     val weatherState: StateFlow<WeatherState> get() = _weatherState.asStateFlow()
 
-    val apiKey = System.getProperty("api.key")
+    private val apiKey = BuildConfig.API_KEY
 
 
-    private fun getCurrentWeather() {
+    fun getCurrentWeather() {
         viewModelScope.launch(ioDispatcher) {
 
             _weatherState.update { currentWeatherState ->
                 currentWeatherState.copy(
-                    isLoading = true,
-                    errorMessage = null
+                    isLoading = true, errorMessage = null
                 )
             }
 
             locationTracker.getCurrentLocation()?.let { location ->
+                Log.e("Latitude:", "${location.latitude}")
+                Log.e("Longitude:", "${location.longitude}")
                 weatherRepository.getCurrentWeather(
-                    latitude = location.latitude,
-                    longitude = location.longitude,
+                    latitude = location.latitude.toString(),
+                    longitude = location.longitude.toString(),
                     apiKey = apiKey
-                ).buffer()
-                    .collect { result ->
+                ).buffer().collect { result ->
                         when (result) {
                             is NetworkResult.Success -> {
+                                Log.e("Weather:", "${result.data}")
                                 _weatherState.update { currentWeatherState ->
                                     currentWeatherState.copy(
                                         currentWeather = result.data,
@@ -56,9 +59,11 @@ class WeatherViewModel @Inject constructor(
                                         errorMessage = null
                                     )
                                 }
+
                             }
 
                             is NetworkResult.Error -> {
+                                Log.e("WeatherError:", "${result.errorDetails}")
                                 _weatherState.update { currentWeatherState ->
                                     currentWeatherState.copy(
                                         currentWeather = null,
@@ -77,8 +82,7 @@ class WeatherViewModel @Inject constructor(
                 _weatherState.update { currentWeatherState ->
                     currentWeatherState.copy(
                         isLoading = false,
-                        errorMessage = "Couldn't retrieve location. Make sure to grant " +
-                                "permission and enable GPS"
+                        errorMessage = "Couldn't retrieve location. Make sure to grant " + "permission and enable GPS"
                     )
                 }
             }

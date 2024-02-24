@@ -3,8 +3,6 @@ package co.ke.weatherapp.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -16,16 +14,15 @@ import co.ke.weatherapp.ui.viewmodel.WeatherViewModel
 
 @Composable
 fun Weather(
+    weatherViewModel: WeatherViewModel,
     navController: NavHostController = rememberNavController(),
-    //weatherViewModel: WeatherViewModel = viewModel(),
+) {
+    val weatherState: WeatherState by weatherViewModel.weatherState.collectAsStateWithLifecycle()
 
-){
-    //val weatherState: WeatherState by weatherViewModel.weatherState.collectAsStateWithLifecycle()
-    
-    NavHost(navController = navController, startDestination = WeatherRoutes.Weather.name){
-        
-        composable(route = WeatherRoutes.Weather.name){
-            WeatherScreen()
+    NavHost(navController = navController, startDestination = WeatherRoutes.Weather.name) {
+
+        composable(route = WeatherRoutes.Weather.name) {
+            WeatherScreen(weatherState)
         }
     }
 

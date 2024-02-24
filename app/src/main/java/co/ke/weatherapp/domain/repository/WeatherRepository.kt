@@ -5,6 +5,6 @@ import co.ke.weatherapp.data.network.utils.NetworkResult
 import kotlinx.coroutines.flow.Flow
 
 interface WeatherRepository {
-    suspend fun getCurrentWeather(latitude: Double, longitude:Double, apiKey: String?)
+    suspend fun getCurrentWeather(latitude: String, longitude:String, apiKey: String)
             : Flow<NetworkResult<CurrentWeather>>
 }

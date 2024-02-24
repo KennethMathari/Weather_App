@@ -8,8 +8,8 @@ interface WeatherApi {
 
     @GET("weather")
     suspend fun getCurrentWeather(
-        @Query("lat") latitude: Double,
-        @Query("lon") longitude : Double,
+        @Query("lat") latitude: String,
+        @Query("lon") longitude : String,
         @Query("appid") apiKey: String
     ): CurrentWeather
 }

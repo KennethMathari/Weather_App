@@ -18,16 +18,16 @@ class WeatherRepositoryImpl @Inject constructor(
 ): WeatherRepository {
 
     override suspend fun getCurrentWeather(
-        latitude: Double,
-        longitude: Double,
-        apiKey: String?
+        latitude: String,
+        longitude: String,
+        apiKey: String
     ): Flow<NetworkResult<CurrentWeather>> {
         return flow {
             try {
                 val currentWeather = weatherApi.getCurrentWeather(
                     latitude,
                     longitude,
-                    apiKey!!
+                    apiKey
                 )
 
                 emit(NetworkResult.Success(currentWeather))

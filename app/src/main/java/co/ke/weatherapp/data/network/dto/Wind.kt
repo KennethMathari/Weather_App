@@ -11,5 +11,5 @@ data class Wind(
     @Json(name = "gust")
     val gust: Double,
     @Json(name = "speed")
-    val speed: Int
+    val speed: Double
 )
