@@ -18,6 +18,8 @@ data class Main(
     val seaLevel: Int?,
     @Json(name = "temp")
     val temp: Double?,
+    @Json(name = "temp_kf")
+    val tempKf: Double?,
     @Json(name = "temp_max")
     val tempMax: Double?,
     @Json(name = "temp_min")

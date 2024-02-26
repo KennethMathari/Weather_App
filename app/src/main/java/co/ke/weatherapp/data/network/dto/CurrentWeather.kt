@@ -30,6 +30,8 @@ data class CurrentWeather(
     val visibility: Int,
     @Json(name = "weather")
     val weather: List<Weather>,
+    @Json(name = "rain")
+    val rain: Rain?,
     @Json(name = "wind")
     val wind: Wind
 )

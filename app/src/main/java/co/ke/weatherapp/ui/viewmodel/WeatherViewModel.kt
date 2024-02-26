@@ -16,7 +16,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.buffer
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -34,8 +33,9 @@ class WeatherViewModel @Inject constructor(
     private val apiKey = BuildConfig.API_KEY
 
 
+    //@RequiresApi(Build.VERSION_CODES.O)
     fun getWeatherInfo() {
-        viewModelScope.launch(ioDispatcher) {
+        viewModelScope.launch(Dispatchers.Default) {
 
             _weatherState.update { currentWeatherState ->
                 currentWeatherState.copy(
@@ -57,37 +57,80 @@ class WeatherViewModel @Inject constructor(
                     latitude = latitude, longitude = longitude, apiKey = apiKey
                 )
 
-                combine(
-                    currentWeatherFlow,
-                    weatherForecastFlow
-                ) { currentWeatherResult, weatherForecastResult ->
-                    Pair(currentWeatherResult, weatherForecastResult)
-                }.buffer().collect { combinedWeatherResult ->
-                        val currentWeather = combinedWeatherResult.first
-                        val weatherForecast = combinedWeatherResult.second
-
-                        if (currentWeather is NetworkResult.Success && weatherForecast is NetworkResult.Success) {
-                            _weatherState.update { currentWeatherState ->
-                                currentWeatherState.copy(
-                                    weatherInfo = WeatherInfo(
-                                        currentWeather = currentWeather.data,
-                                        weatherForecast = weatherForecast.data
-                                    ), isLoading = false, errorMessage = null
-                                )
+                currentWeatherFlow.buffer()
+                    .collect { currentWeatherResult ->
+                        when (currentWeatherResult) {
+                            is NetworkResult.Success -> {
+                                _weatherState.update { weatherState ->
+                                    weatherState.copy(
+                                        weatherInfo = WeatherInfo(
+                                            currentWeather = currentWeatherResult.data,
+                                            weatherForecast = null
+                                        ),
+                                        isLoading = false,
+                                        errorMessage = null
+                                    )
+                                }
                             }
-                        } else if (currentWeather is NetworkResult.Error && weatherForecast is NetworkResult.Error) {
-                            _weatherState.update { currentWeatherState ->
-                                currentWeatherState.copy(
-                                    weatherInfo = null,
-                                    isLoading = false,
-                                    errorMessage = currentWeather.errorDetails.message
-                                        ?: weatherForecast.errorDetails.message
-                                )
+
+                            is NetworkResult.Loading -> {
+                                _weatherState.update { weatherState ->
+                                    weatherState.copy(
+                                        weatherInfo = null,
+                                        isLoading = true,
+                                        errorMessage = null
+                                    )
+                                }
+                            }
+
+                            is NetworkResult.Error -> {
+                                _weatherState.update { weatherState ->
+                                    weatherState.copy(
+                                        weatherInfo = null,
+                                        isLoading = false,
+                                        errorMessage = currentWeatherResult.errorDetails.message
+                                    )
+                                }
                             }
                         }
 
-
                     }
+
+//                combine(
+//                    currentWeatherFlow,
+//                    weatherForecastFlow
+//                ) { currentWeatherResult, weatherForecastResult ->
+//                    Pair(currentWeatherResult, weatherForecastResult)
+//                }.buffer().collect { combinedWeatherResult ->
+//                    val currentWeather = combinedWeatherResult.first
+//                    val weatherForecast = combinedWeatherResult.second
+//
+//                    if (currentWeather is NetworkResult.Success && weatherForecast is NetworkResult.Success) {
+//                        Log.e("WeatherForecast:", "${weatherForecast.data}")
+//
+//                        _weatherState.update { currentWeatherState ->
+//                            currentWeatherState.copy(
+//                                weatherInfo = WeatherInfo(
+//                                    currentWeather = currentWeather.data,
+//                                    weatherForecast = weatherForecast.data
+//                                ), isLoading = false, errorMessage = null
+//                            )
+//                        }
+//                    } else if (currentWeather is NetworkResult.Error && weatherForecast is NetworkResult.Error) {
+//                        Log.e("CurrentWeatherError", "${currentWeather.errorDetails.message}")
+//                        Log.e("WeatherForecastError", "${weatherForecast.errorDetails.message}")
+//                        _weatherState.update { currentWeatherState ->
+//                            currentWeatherState.copy(
+//                                weatherInfo = null,
+//                                isLoading = false,
+//                                errorMessage = currentWeather.errorDetails.message
+//                                    ?: weatherForecast.errorDetails.message
+//                            )
+//                        }
+//                    }
+//
+//
+//                }
 
             } ?: kotlin.run {
                 _weatherState.update { currentWeatherState ->

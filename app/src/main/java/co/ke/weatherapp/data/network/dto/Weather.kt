@@ -7,11 +7,11 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class Weather(
     @Json(name = "description")
-    val description: String,
+    val description: String?,
     @Json(name = "icon")
-    val icon: String,
+    val icon: String?,
     @Json(name = "id")
-    val id: Int,
+    val id: Int?,
     @Json(name = "main")
-    val main: String
+    val main: String?
 )

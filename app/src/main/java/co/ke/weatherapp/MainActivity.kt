@@ -2,6 +2,7 @@ package co.ke.weatherapp
 
 import android.Manifest
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
@@ -23,12 +24,18 @@ class MainActivity : ComponentActivity() {
     private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
 
 
+    //@RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         permissionLauncher = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
-        ) {
-            weatherViewModel.getWeatherInfo()
+        ) { permissions ->
+            if (permissions.all { it.value }) {
+                weatherViewModel.getWeatherInfo()
+            } else {
+                Toast.makeText(this, "Permissions not granted", Toast.LENGTH_SHORT).show()
+            }
+
         }
 
         permissionLauncher.launch(
