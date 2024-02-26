@@ -17,3 +17,5 @@ data class WeatherForecast(
     @Json(name = "message")
     val message: Int
 )
+
+
