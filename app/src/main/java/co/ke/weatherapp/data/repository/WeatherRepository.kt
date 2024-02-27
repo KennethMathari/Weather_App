@@ -1,4 +1,4 @@
-package co.ke.weatherapp.domain.repository
+package co.ke.weatherapp.data.repository
 
 import co.ke.weatherapp.data.network.dto.CurrentWeather
 import co.ke.weatherapp.data.network.dto.WeatherForecast

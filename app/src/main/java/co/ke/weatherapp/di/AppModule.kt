@@ -2,10 +2,6 @@ package co.ke.weatherapp.di
 
 import android.app.Application
 import co.ke.weatherapp.data.network.services.WeatherApi
-import co.ke.weatherapp.data.repository.WeatherRepositoryImpl
-import co.ke.weatherapp.domain.location.LocationTracker
-import co.ke.weatherapp.domain.repository.WeatherRepository
-import co.ke.weatherapp.ui.viewmodel.WeatherViewModel
 import co.ke.weatherapp.utils.Constants.BASE_URL
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -14,7 +10,6 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers

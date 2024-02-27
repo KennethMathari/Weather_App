@@ -1,7 +1,7 @@
 package co.ke.weatherapp.di
 
 import co.ke.weatherapp.data.location.DefaultLocationTracker
-import co.ke.weatherapp.domain.location.LocationTracker
+import co.ke.weatherapp.data.location.LocationTracker
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

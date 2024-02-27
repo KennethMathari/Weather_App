@@ -1,4 +1,4 @@
-package co.ke.weatherapp.domain.location
+package co.ke.weatherapp.data.location
 
 import android.location.Location
 

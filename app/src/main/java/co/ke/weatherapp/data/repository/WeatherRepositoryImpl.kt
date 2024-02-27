@@ -8,9 +8,7 @@ import co.ke.weatherapp.data.network.services.WeatherApi
 import co.ke.weatherapp.data.network.utils.NetworkResult
 import co.ke.weatherapp.data.network.utils.safeApiCall
 import co.ke.weatherapp.di.IoDispatcher
-import co.ke.weatherapp.domain.repository.WeatherRepository
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
