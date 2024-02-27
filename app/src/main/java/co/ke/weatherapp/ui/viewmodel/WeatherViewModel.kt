@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.ke.weatherapp.BuildConfig
 import co.ke.weatherapp.data.network.utils.NetworkResult
+import co.ke.weatherapp.di.IoDispatcher
 import co.ke.weatherapp.domain.WeatherType
 import co.ke.weatherapp.domain.WeatherType.Companion.getWeatherType
 import co.ke.weatherapp.domain.location.LocationTracker
@@ -28,7 +29,7 @@ import javax.inject.Inject
 class WeatherViewModel @Inject constructor(
     private val weatherRepository: WeatherRepository,
     private val locationTracker: LocationTracker,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val _weatherState = MutableStateFlow(WeatherState())

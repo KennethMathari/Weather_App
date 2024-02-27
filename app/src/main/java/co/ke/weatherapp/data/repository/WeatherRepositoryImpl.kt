@@ -7,6 +7,7 @@ import co.ke.weatherapp.data.network.dto.WeatherForecast
 import co.ke.weatherapp.data.network.services.WeatherApi
 import co.ke.weatherapp.data.network.utils.NetworkResult
 import co.ke.weatherapp.data.network.utils.safeApiCall
+import co.ke.weatherapp.di.IoDispatcher
 import co.ke.weatherapp.domain.repository.WeatherRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +20,7 @@ import javax.inject.Inject
 @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
 class WeatherRepositoryImpl @Inject constructor(
     private val weatherApi: WeatherApi,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : WeatherRepository {
 
     override suspend fun getCurrentWeather(

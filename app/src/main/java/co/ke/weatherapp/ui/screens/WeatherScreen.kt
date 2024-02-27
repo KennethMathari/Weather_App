@@ -26,28 +26,29 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import co.ke.weatherapp.R
 import co.ke.weatherapp.ui.state.WeatherState
-import co.ke.weatherapp.ui.theme.Sunny
 import co.ke.weatherapp.ui.utils.convertKelvinToCelsius
 import co.ke.weatherapp.ui.utils.toDayOfWeek
 import java.util.Locale
 
 @Composable
 fun WeatherScreen(
-    weatherState: WeatherState, modifier: Modifier = Modifier
+    weatherState: WeatherState,
+    modifier: Modifier = Modifier
 ) {
     weatherState.weatherInfo?.let { weatherInfo ->
 
 
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = modifier
+                .fillMaxSize()
+                .background(weatherInfo.weatherType!!.color)
         ) {
             Row(
-                modifier = Modifier
+                modifier = modifier
                     .weight(45f)
                     .fillMaxSize()
             ) {
@@ -58,7 +59,7 @@ fun WeatherScreen(
                         .fillMaxHeight()
                 ) {
                     //Image part
-                    val image: Painter = painterResource(id = weatherInfo.weatherType!!.imageRes)
+                    val image: Painter = painterResource(id = weatherInfo.weatherType.imageRes)
                     Image(
                         painter = image,
                         contentDescription = null,
@@ -76,9 +77,7 @@ fun WeatherScreen(
                             contentDescription = null,
                             modifier = modifier
                                 .size(35.dp)
-                                .clickable(
-                                    enabled = true
-                                ) {},
+                                .clickable {},
                             tint = Color.White
                         )
 
@@ -86,7 +85,8 @@ fun WeatherScreen(
 
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = modifier.align(Alignment.Center)
+                        modifier = modifier
+                            .align(Alignment.Center)
                             .padding(bottom = 80.dp, end = 15.dp)
                     ) {
                         Text(
@@ -99,7 +99,7 @@ fun WeatherScreen(
                         )
 
                         Text(
-                            text = weatherInfo.currentWeather.weather[0].main!!.uppercase(Locale.ROOT),
+                            text = weatherInfo.weatherType.weatherDesc.uppercase(Locale.ROOT),
                             color = Color.White,
                             style = TextStyle(
                                 fontSize = 30.sp
@@ -123,7 +123,7 @@ fun WeatherScreen(
                     .weight(10f)
                     .fillMaxWidth()
                     .fillMaxHeight()
-                    .background(weatherInfo.weatherType!!.color)
+                    .background(weatherInfo.weatherType.color)
             ) {
                 // Second Row
                 Column {
@@ -239,7 +239,9 @@ fun WeatherScreen(
                                     Image(
                                         painter = painterResource(id = weatherInfo.weatherType.iconRes),
                                         contentDescription = null,
-                                        modifier = modifier.weight(1f).size(30.dp),
+                                        modifier = modifier
+                                            .weight(1f)
+                                            .size(30.dp),
                                         alignment = Alignment.Center
                                     )
 

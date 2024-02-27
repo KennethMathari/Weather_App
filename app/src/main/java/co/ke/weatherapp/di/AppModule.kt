@@ -22,6 +22,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Qualifier
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -63,10 +64,13 @@ object AppModule{
         return LocationServices.getFusedLocationProviderClient(app)
     }
 
+    @IoDispatcher
     @Provides
-    fun provideCoroutineDispatcher(): CoroutineDispatcher {
-        return Dispatchers.IO
-    }
+    fun provideIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
 
 
 }
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class IoDispatcher
