@@ -105,6 +105,15 @@ fun WeatherScreen(
                             )
                         )
                     }
+
+                    Text(
+                        text = weatherInfo.currentWeather!!.name,
+                        color = Color.White,
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .align(Alignment.TopEnd)
+                    )
+
                 }
             }
 
