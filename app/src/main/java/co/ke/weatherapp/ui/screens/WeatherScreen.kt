@@ -58,7 +58,7 @@ fun WeatherScreen(
                         .fillMaxHeight()
                 ) {
                     //Image part
-                    val image: Painter = painterResource(id = R.drawable.forest_sunny)
+                    val image: Painter = painterResource(id = weatherInfo.weatherType!!.imageRes)
                     Image(
                         painter = image,
                         contentDescription = null,
@@ -97,6 +97,7 @@ fun WeatherScreen(
                                 fontSize = 70.sp
                             )
                         )
+
                         Text(
                             text = weatherInfo.currentWeather.weather[0].main!!.uppercase(Locale.ROOT),
                             color = Color.White,
@@ -122,7 +123,7 @@ fun WeatherScreen(
                     .weight(10f)
                     .fillMaxWidth()
                     .fillMaxHeight()
-                    .background(Sunny)
+                    .background(weatherInfo.weatherType!!.color)
             ) {
                 // Second Row
                 Column {
@@ -203,7 +204,7 @@ fun WeatherScreen(
                 modifier = Modifier
                     .weight(45f)
                     .fillMaxWidth()
-                    .background(Sunny)
+                    .background(weatherInfo.weatherType.color)
             ) {
                 // Third Row
                 Box(
@@ -236,7 +237,7 @@ fun WeatherScreen(
                                     )
 
                                     Image(
-                                        painter = painterResource(id = R.drawable.clear),
+                                        painter = painterResource(id = weatherInfo.weatherType.iconRes),
                                         contentDescription = null,
                                         modifier = modifier.weight(1f).size(30.dp),
                                         alignment = Alignment.Center

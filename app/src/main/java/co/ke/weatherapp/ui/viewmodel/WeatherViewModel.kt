@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.ke.weatherapp.BuildConfig
 import co.ke.weatherapp.data.network.utils.NetworkResult
+import co.ke.weatherapp.domain.WeatherType
+import co.ke.weatherapp.domain.WeatherType.Companion.getWeatherType
 import co.ke.weatherapp.domain.location.LocationTracker
 import co.ke.weatherapp.domain.repository.WeatherRepository
 import co.ke.weatherapp.ui.state.WeatherInfo
@@ -74,7 +76,8 @@ class WeatherViewModel @Inject constructor(
                                 currentWeatherState.copy(
                                     weatherInfo = WeatherInfo(
                                         currentWeather = currentWeather.data,
-                                        weatherForecast = weatherForecast.data.filterFor1000h()
+                                        weatherForecast = weatherForecast.data.filterFor1000h(),
+                                        weatherType = getWeatherType(currentWeather.data.weather[0].id!!)
                                     ), isLoading = false, errorMessage = null
                                 )
                             }

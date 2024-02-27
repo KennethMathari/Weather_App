@@ -49,7 +49,7 @@ sealed class WeatherType(
     )
 
     companion object {
-        fun fromWeatherCode(code: Int): WeatherType {
+        fun getWeatherType(code: Int): WeatherType {
             return when (code) {
                 800 -> Clear
                 801 -> Clouds
