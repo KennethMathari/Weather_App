@@ -246,7 +246,7 @@ fun WeatherScreen(
                                     )
 
                                     Text(
-                                        text = it.main.temp!!.convertKelvinToCelsius(),
+                                        text = it.main.temp.convertKelvinToCelsius(),
                                         modifier = modifier.weight(1f),
                                         style = TextStyle(
                                             color = Color.White, fontSize = 20.sp

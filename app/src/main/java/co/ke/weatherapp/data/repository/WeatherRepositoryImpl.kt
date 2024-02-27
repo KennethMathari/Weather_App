@@ -8,6 +8,10 @@ import co.ke.weatherapp.data.network.services.WeatherApi
 import co.ke.weatherapp.data.network.utils.NetworkResult
 import co.ke.weatherapp.data.network.utils.safeApiCall
 import co.ke.weatherapp.di.IoDispatcher
+import co.ke.weatherapp.domain.mappers.mapToCurrentWeatherDomain
+import co.ke.weatherapp.domain.mappers.mapToWeatherForecastDomain
+import co.ke.weatherapp.domain.model.CurrentWeatherDomain
+import co.ke.weatherapp.domain.model.WeatherForecastDomain
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -23,14 +27,15 @@ class WeatherRepositoryImpl @Inject constructor(
 
     override suspend fun getCurrentWeather(
         latitude: String, longitude: String, apiKey: String
-    ): Flow<NetworkResult<CurrentWeather>> {
+    ): Flow<NetworkResult<CurrentWeatherDomain>> {
         return flow {
             val result = safeApiCall {
                 weatherApi.getCurrentWeather(
                     latitude, longitude, apiKey
                 )
             }
-            emit(result)
+            val mappedResult = mapToCurrentWeatherDomain(result)
+            emit(mappedResult)
         }.flowOn(ioDispatcher).onStart {
             emit(NetworkResult.Loading)
         }
@@ -38,14 +43,15 @@ class WeatherRepositoryImpl @Inject constructor(
 
     override suspend fun getWeatherForecast(
         latitude: String, longitude: String, apiKey: String
-    ): Flow<NetworkResult<WeatherForecast>> {
+    ): Flow<NetworkResult<WeatherForecastDomain>> {
         return flow {
             val result = safeApiCall {
                 weatherApi.getWeatherForecast(
                     latitude, longitude, apiKey
                 )
             }
-            emit(result)
+            val mappedResult = mapToWeatherForecastDomain(result)
+            emit(mappedResult)
 
         }.flowOn(ioDispatcher).onStart {
             emit(NetworkResult.Loading)

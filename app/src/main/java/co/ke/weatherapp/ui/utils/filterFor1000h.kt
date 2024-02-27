@@ -1,9 +1,9 @@
 package co.ke.weatherapp.ui.utils
 
-import co.ke.weatherapp.data.network.dto.WeatherForecast
+import co.ke.weatherapp.domain.model.WeatherForecastDomain
 
 
-fun WeatherForecast.filterFor1000h(): WeatherForecast{
+fun WeatherForecastDomain.filterFor1000h(): WeatherForecastDomain {
     val filteredList = this.list.filter {
         it.dtTxt.endsWith("00:00:00")
     }

@@ -1,8 +1,8 @@
 package co.ke.weatherapp.ui.state
 
-import co.ke.weatherapp.data.network.dto.CurrentWeather
-import co.ke.weatherapp.data.network.dto.WeatherForecast
 import co.ke.weatherapp.domain.WeatherType
+import co.ke.weatherapp.domain.model.CurrentWeatherDomain
+import co.ke.weatherapp.domain.model.WeatherForecastDomain
 
 data class WeatherState(
     val weatherInfo: WeatherInfo? = null,
@@ -11,7 +11,7 @@ data class WeatherState(
 )
 
 data class WeatherInfo(
-    val currentWeather: CurrentWeather? = null,
-    val weatherForecast: WeatherForecast? = null,
+    val currentWeather: CurrentWeatherDomain? = null,
+    val weatherForecast: WeatherForecastDomain? = null,
     val weatherType: WeatherType? = null
 )

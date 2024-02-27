@@ -76,7 +76,7 @@ class WeatherViewModel @Inject constructor(
                                     weatherInfo = WeatherInfo(
                                         currentWeather = currentWeather.data,
                                         weatherForecast = weatherForecast.data.filterFor1000h(),
-                                        weatherType = getWeatherType(currentWeather.data.weather[0].id!!)
+                                        weatherType = getWeatherType(currentWeather.data.weather[0].id)
                                     ), isLoading = false, errorMessage = null
                                 )
                             }
