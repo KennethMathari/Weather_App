@@ -41,8 +41,7 @@ import java.util.Locale
 
 @Composable
 fun WeatherScreen(
-    modifier: Modifier = Modifier,
-    weatherViewModel: WeatherViewModel
+    modifier: Modifier = Modifier, weatherViewModel: WeatherViewModel
 ) {
     val weatherState by weatherViewModel.weatherState.collectAsStateWithLifecycle()
 
@@ -122,13 +121,22 @@ fun WeatherScreen(
                                 )
                             }
 
-                            Text(
-                                text = weatherInfo.currentWeather.name,
-                                color = Color.White,
-                                modifier = Modifier
-                                    .padding(16.dp)
+                            Row(
+                                modifier = modifier
                                     .align(Alignment.TopEnd)
-                            )
+                                    .padding(16.dp)
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.pin),
+                                    contentDescription = null,
+                                    modifier = modifier.size(25.dp)
+                                        .padding(end = 5.dp)
+                                )
+                                Text(
+                                    text = weatherInfo.currentWeather.name, color = Color.White
+                                )
+                            }
+
 
                         }
                     }
