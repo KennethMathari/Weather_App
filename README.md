@@ -8,7 +8,7 @@
 - Add your `OPEN_WEATHER_API_KEY` to your `local.properties` file
 - Build the project
 
-### App Features
+## App Features
 
 * Display the current weather at the user's location
 * Display the weather forecast for the next 5 days based on the user's location
