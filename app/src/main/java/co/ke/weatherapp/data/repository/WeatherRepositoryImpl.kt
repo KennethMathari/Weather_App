@@ -29,6 +29,7 @@ class WeatherRepositoryImpl @Inject constructor(
         latitude: String, longitude: String, apiKey: String
     ): Flow<NetworkResult<CurrentWeatherDomain>> {
         return flow {
+            emit(NetworkResult.Loading)
             val result = safeApiCall {
                 weatherApi.getCurrentWeather(
                     latitude, longitude, apiKey
@@ -36,9 +37,7 @@ class WeatherRepositoryImpl @Inject constructor(
             }
             val mappedResult = mapToCurrentWeatherDomain(result)
             emit(mappedResult)
-        }.flowOn(ioDispatcher).onStart {
-            emit(NetworkResult.Loading)
-        }
+        }.flowOn(ioDispatcher)
     }
 
     override suspend fun getWeatherForecast(
