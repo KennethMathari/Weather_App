@@ -9,5 +9,5 @@ sealed class NetworkResult<out T:Any?>{
     data class Error(val errorDetails: Throwable) :
         NetworkResult<Nothing>()
 
-    object Loading : NetworkResult<Nothing>()
+    data object Loading : NetworkResult<Nothing>()
 }

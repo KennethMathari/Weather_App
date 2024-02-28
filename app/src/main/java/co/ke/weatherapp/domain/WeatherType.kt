@@ -13,35 +13,35 @@ sealed class WeatherType(
     @DrawableRes val imageRes: Int,
     val color: Color
 ) {
-    object Clear : WeatherType(
+    data object Clear : WeatherType(
         weatherDesc = "Sunny",
         iconRes = R.drawable.clear,
         imageRes = R.drawable.forest_sunny,
         color = Sunny
     )
 
-    object Clouds : WeatherType(
+    data object Clouds : WeatherType(
         weatherDesc = "Cloudy",
         iconRes = R.drawable.partlysunny,
         imageRes = R.drawable.forest_cloudy,
         color = Cloudy
     )
 
-    object Rain : WeatherType(
+    data object Rain : WeatherType(
         weatherDesc = "Rainy",
         iconRes = R.drawable.rain,
         imageRes = R.drawable.forest_rainy,
         color = Rainy
     )
 
-    object Thunderstorm : WeatherType(
+    data object Thunderstorm : WeatherType(
         weatherDesc = "Thunderstorm",
         iconRes = R.drawable.rain,
         imageRes = R.drawable.forest_rainy,
         color = Rainy
     )
 
-    object Drizzle : WeatherType(
+    data object Drizzle : WeatherType(
         weatherDesc = "Drizzle",
         iconRes = R.drawable.rain,
         imageRes = R.drawable.forest_rainy,

@@ -21,7 +21,7 @@ import javax.inject.Qualifier
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AppModule{
+object AppModule {
 
     @Provides
     fun provideMoshi(): Moshi {
@@ -50,19 +50,18 @@ object AppModule{
     }
 
     @Provides
-    fun provideWeatherApi(retrofit: Retrofit): WeatherApi{
+    fun provideWeatherApi(retrofit: Retrofit): WeatherApi {
         return retrofit.create(WeatherApi::class.java)
     }
 
     @Provides
-    fun provideFusedLocationClient(app: Application): FusedLocationProviderClient{
+    fun provideFusedLocationClient(app: Application): FusedLocationProviderClient {
         return LocationServices.getFusedLocationProviderClient(app)
     }
 
     @IoDispatcher
     @Provides
     fun provideIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
-
 
 }
 

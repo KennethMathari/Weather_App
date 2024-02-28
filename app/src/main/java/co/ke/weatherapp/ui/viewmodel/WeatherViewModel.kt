@@ -4,11 +4,11 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.ke.weatherapp.BuildConfig
+import co.ke.weatherapp.data.location.LocationTracker
 import co.ke.weatherapp.data.network.utils.NetworkResult
+import co.ke.weatherapp.data.repository.WeatherRepository
 import co.ke.weatherapp.di.IoDispatcher
 import co.ke.weatherapp.domain.WeatherType.Companion.getWeatherType
-import co.ke.weatherapp.data.location.LocationTracker
-import co.ke.weatherapp.data.repository.WeatherRepository
 import co.ke.weatherapp.ui.state.WeatherInfo
 import co.ke.weatherapp.ui.state.WeatherState
 import co.ke.weatherapp.ui.utils.filterFor1000h

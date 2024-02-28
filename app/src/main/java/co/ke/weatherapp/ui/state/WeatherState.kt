@@ -11,7 +11,7 @@ data class WeatherState(
 )
 
 data class WeatherInfo(
-    val currentWeather: CurrentWeatherDomain? = null,
-    val weatherForecast: WeatherForecastDomain? = null,
-    val weatherType: WeatherType? = null
+    val currentWeather: CurrentWeatherDomain,
+    val weatherForecast: WeatherForecastDomain,
+    val weatherType: WeatherType
 )
