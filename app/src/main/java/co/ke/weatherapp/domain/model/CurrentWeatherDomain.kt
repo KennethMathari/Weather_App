@@ -5,5 +5,5 @@ data class CurrentWeatherDomain(
     val id: Int,
     val main: MainDomain,
     val name: String,
-    val weather: List<WeatherDomain>,
+    val weather: List<WeatherDomain>
 )

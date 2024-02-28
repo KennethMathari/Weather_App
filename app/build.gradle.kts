@@ -87,6 +87,11 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.5.0")
     //Location
     implementation("com.google.android.gms:play-services-location:21.1.0")
+    //Room
+    val roomVersion = "2.6.1"
+    implementation("androidx.room:room-runtime:$roomVersion")
+    annotationProcessor("androidx.room:room-compiler:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
 
     //JUnit
     testImplementation("junit:junit:4.13.2")
