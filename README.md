@@ -30,5 +30,5 @@
 * [MockK](https://github.com/mockk) - mocking library for Kotlin
 * [Truth](https://github.com/google/truth) - Truth makes your test assertions and failure messages more readable.
 
-# App Screenshot
+## App Screenshot
 
