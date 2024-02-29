@@ -5,7 +5,7 @@
 - [A valid Open Weather API Key](https://openweathermap.org/appid)
 
 ## Setup
-- Add your `OPEN_WEATHER_API_KEY` to your `local.properties` file
+- Add your Open Weather `API_KEY` to your `local.properties` file
 - Build the project
 
 ## App Features
