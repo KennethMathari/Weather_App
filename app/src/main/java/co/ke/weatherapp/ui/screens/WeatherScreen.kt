@@ -130,7 +130,8 @@ fun WeatherScreen(
                                     painter = painterResource(id = R.drawable.pin),
                                     contentDescription = null,
                                     modifier = modifier.size(25.dp)
-                                        .padding(end = 5.dp)
+                                        .padding(end = 5.dp),
+                                    tint = Color.White
                                 )
                                 Text(
                                     text = weatherInfo.currentWeather.name, color = Color.White
