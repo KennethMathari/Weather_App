@@ -33,8 +33,6 @@
 ## App Screenshot!
 > Cloudy
 > ![](WhatsApp%20Image%202024-02-29%20at%2009.16.50.jpeg)
->
-> Sunny
-> ![](https://github.com/KennethMathari/WeatherAppDVT/assets/27956755/ad3dc0ee-09b2-4839-b4c0-0bd435635ff9)
+
 
 
