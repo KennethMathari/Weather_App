@@ -35,4 +35,4 @@
 > ![](WhatsApp%20Image%202024-02-29%20at%2009.16.50.jpeg)
 >
 > Sunny
-> ![image](https://github.com/KennethMathari/WeatherAppDVT/assets/27956755/5a93ed2a-3c3c-4610-a90c-8f532a322bbc)
+> ![](https://github.com/KennethMathari/WeatherAppDVT/assets/27956755/5a93ed2a-3c3c-4610-a90c-8f532a322bbc)
