@@ -31,7 +31,6 @@
 * [Truth](https://github.com/google/truth) - Truth makes your test assertions and failure messages more readable.
 
 ## App Screenshot!
-> Cloudy
 > ![](WhatsApp%20Image%202024-02-29%20at%2009.16.50.jpeg)
 
 
