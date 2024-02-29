@@ -17,16 +17,15 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import co.ke.weatherapp.domain.model.WeatherForecastDomain
-import co.ke.weatherapp.domain.model.WeatherForecastInfoDomain
 import co.ke.weatherapp.ui.state.WeatherInfo
 import co.ke.weatherapp.ui.utils.convertKelvinToCelsius
 import co.ke.weatherapp.ui.utils.toDayOfWeek
 
 @Composable
-fun WeatherForecastItem(
+fun WeatherForecastSection(
     modifier: Modifier,
     weatherInfo: WeatherInfo) {
+
     LazyColumn(
         modifier = modifier
             .padding(8.dp)
