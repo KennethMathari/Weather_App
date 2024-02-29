@@ -14,8 +14,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -28,13 +26,12 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import co.ke.weatherapp.R
+import co.ke.weatherapp.ui.components.WeatherForecastItem
 import co.ke.weatherapp.ui.utils.convertKelvinToCelsius
-import co.ke.weatherapp.ui.utils.toDayOfWeek
 import co.ke.weatherapp.ui.viewmodel.WeatherViewModel
 import java.util.Locale
 
@@ -129,7 +126,8 @@ fun WeatherScreen(
                                 Icon(
                                     painter = painterResource(id = R.drawable.pin),
                                     contentDescription = null,
-                                    modifier = modifier.size(25.dp)
+                                    modifier = modifier
+                                        .size(25.dp)
                                         .padding(end = 5.dp),
                                     tint = Color.White
                                 )
@@ -239,59 +237,19 @@ fun WeatherScreen(
                                 .fillMaxHeight()
                                 .fillMaxWidth()
                         ) {
-                            LazyColumn(
-                                modifier = modifier
-                                    .padding(8.dp)
-                                    .fillMaxWidth()
-                            ) {
-                                weatherInfo.weatherForecast.let {
-                                    items(it.list) {
+                            WeatherForecastItem(
+                                modifier = modifier,
+                                weatherInfo = weatherInfo
+                            )
 
-                                        Row(
-                                            modifier = modifier
-                                                .fillMaxWidth()
-                                                .padding(
-                                                    horizontal = 16.dp, vertical = 20.dp
-                                                )
-                                        ) {
-                                            Text(
-                                                text = it.dt.toDayOfWeek(),
-                                                modifier = modifier.weight(1f),
-                                                style = TextStyle(
-                                                    color = Color.White, fontSize = 20.sp
-                                                )
-                                            )
-
-                                            Image(
-                                                painter = painterResource(id = weatherInfo.weatherType.iconRes),
-                                                contentDescription = null,
-                                                modifier = modifier
-                                                    .weight(1f)
-                                                    .size(30.dp),
-                                                alignment = Alignment.Center
-                                            )
-
-                                            Text(
-                                                text = it.main.temp.convertKelvinToCelsius(),
-                                                modifier = modifier.weight(1f),
-                                                style = TextStyle(
-                                                    color = Color.White, fontSize = 20.sp
-                                                ),
-                                                textAlign = TextAlign.End
-                                            )
-                                        }
-
-                                    }
-                                }
-                            }
                         }
                     }
                 }
-
-
             }
 
+
         }
+
     }
 }
 
