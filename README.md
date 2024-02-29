@@ -31,5 +31,4 @@
 * [Truth](https://github.com/google/truth) - Truth makes your test assertions and failure messages more readable.
 
 ## App Screenshot!
-> [WhatsApp Image 2024-02-29 at 09.16.50.jpeg](..%2F..%2FDownloads%2FDVT%20Weather%20App%2FAssets%2FImages%2FWhatsApp%20Image%202024-02-29%20at%2009.16.50.jpeg)
-> ![WhatsApp Image 2024-02-29 at 09.16.50.jpeg](..%2F..%2FDownloads%2FDVT%20Weather%20App%2FAssets%2FImages%2FWhatsApp%20Image%202024-02-29%20at%2009.16.50.jpeg)
+> ![](WhatsApp%20Image%202024-02-29%20at%2009.16.50.jpeg)
