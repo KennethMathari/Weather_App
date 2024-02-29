@@ -1,6 +1,5 @@
 package co.ke.weatherapp.ui.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.ke.weatherapp.BuildConfig
@@ -45,8 +44,6 @@ class WeatherViewModel @Inject constructor(
             }
 
             locationTracker.getCurrentLocation()?.let { location ->
-                Log.e("Latitude:", "${location.latitude}")
-                Log.e("Longitude:", "${location.longitude}")
                 val latitude = location.latitude.toString()
                 val longitude = location.longitude.toString()
 
@@ -68,9 +65,6 @@ class WeatherViewModel @Inject constructor(
 
                     when {
                         currentWeather is NetworkResult.Success && weatherForecast is NetworkResult.Success -> {
-                            Log.e(
-                                "WeatherForecast:", "${weatherForecast.data.filterFor1000h()}"
-                            )
                             _weatherState.update { currentWeatherState ->
                                 currentWeatherState.copy(
                                     weatherInfo = WeatherInfo(
@@ -83,8 +77,6 @@ class WeatherViewModel @Inject constructor(
                         }
 
                         currentWeather is NetworkResult.Error && weatherForecast is NetworkResult.Error -> {
-                            Log.e("CurrentWeatherError", "${currentWeather.errorDetails.message}")
-                            Log.e("WeatherForecastError", "${weatherForecast.errorDetails.message}")
                             _weatherState.update { currentWeatherState ->
                                 currentWeatherState.copy(
                                     weatherInfo = null,
