@@ -92,6 +92,8 @@ dependencies {
     implementation("androidx.room:room-runtime:$roomVersion")
     annotationProcessor("androidx.room:room-compiler:$roomVersion")
     kapt("androidx.room:room-compiler:$roomVersion")
+    //EitherNet
+    implementation("com.slack.eithernet:eithernet:1.8.1")
 
     //JUnit
     testImplementation("junit:junit:4.13.2")

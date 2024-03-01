@@ -8,6 +8,8 @@ import co.ke.weatherapp.data.network.utils.NetworkResult
 import co.ke.weatherapp.data.repository.WeatherRepository
 import co.ke.weatherapp.di.IoDispatcher
 import co.ke.weatherapp.domain.WeatherType.Companion.getWeatherType
+import co.ke.weatherapp.domain.mappers.mapToCurrentWeatherDomain
+import co.ke.weatherapp.domain.mappers.mapToWeatherForecastDomain
 import co.ke.weatherapp.ui.state.WeatherInfo
 import co.ke.weatherapp.ui.state.WeatherState
 import co.ke.weatherapp.ui.utils.filterFor1000h
@@ -17,7 +19,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.buffer
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -26,7 +30,7 @@ import javax.inject.Inject
 class WeatherViewModel @Inject constructor(
     private val weatherRepository: WeatherRepository,
     private val locationTracker: LocationTracker,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     private val _weatherState = MutableStateFlow(WeatherState())
@@ -49,11 +53,19 @@ class WeatherViewModel @Inject constructor(
 
                 val currentWeatherFlow = weatherRepository.getCurrentWeather(
                     latitude = latitude, longitude = longitude, apiKey = apiKey
-                )
+                ).map {
+                    mapToCurrentWeatherDomain(it)
+                }.catch { e ->
+                    println(e)
+                }
 
                 val weatherForecastFlow = weatherRepository.getWeatherForecast(
                     latitude = latitude, longitude = longitude, apiKey = apiKey
-                )
+                ).map {
+                    mapToWeatherForecastDomain(it)
+                }.catch { e ->
+                    println(e)
+                }
 
                 combine(
                     currentWeatherFlow, weatherForecastFlow

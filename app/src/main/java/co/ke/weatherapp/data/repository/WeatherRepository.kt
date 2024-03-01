@@ -10,9 +10,9 @@ import kotlinx.coroutines.flow.Flow
 interface WeatherRepository {
     suspend fun getCurrentWeather(
         latitude: String, longitude: String, apiKey: String
-    ): Flow<NetworkResult<CurrentWeatherDomain>>
+    ): Flow<NetworkResult<CurrentWeather>>
 
     suspend fun getWeatherForecast(
         latitude: String, longitude: String, apiKey: String
-    ): Flow<NetworkResult<WeatherForecastDomain>>
+    ): Flow<NetworkResult<WeatherForecast>>
 }

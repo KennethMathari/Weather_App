@@ -13,6 +13,7 @@ import co.ke.weatherapp.domain.mappers.mapToWeatherForecastDomain
 import co.ke.weatherapp.domain.model.CurrentWeatherDomain
 import co.ke.weatherapp.domain.model.WeatherForecastDomain
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -27,30 +28,40 @@ class WeatherRepositoryImpl @Inject constructor(
 
     override suspend fun getCurrentWeather(
         latitude: String, longitude: String, apiKey: String
-    ): Flow<NetworkResult<CurrentWeatherDomain>> {
+    ): Flow<NetworkResult<CurrentWeather>> {
         return flow {
-            emit(NetworkResult.Loading)
-            val result = safeApiCall {
-                weatherApi.getCurrentWeather(
-                    latitude, longitude, apiKey
-                )
+            while (true) {
+                val result = safeApiCall {
+                    weatherApi.getCurrentWeather(
+                        latitude, longitude, apiKey
+                    )
+                }
+                //val mappedResult = mapToCurrentWeatherDomain(result)
+                emit(result)
+                delay(5000)
             }
-            val mappedResult = mapToCurrentWeatherDomain(result)
-            emit(mappedResult)
+
         }.flowOn(ioDispatcher)
+            .onStart {
+                emit(NetworkResult.Loading)
+            }
+
     }
 
     override suspend fun getWeatherForecast(
         latitude: String, longitude: String, apiKey: String
-    ): Flow<NetworkResult<WeatherForecastDomain>> {
+    ): Flow<NetworkResult<WeatherForecast>> {
         return flow {
-            val result = safeApiCall {
-                weatherApi.getWeatherForecast(
-                    latitude, longitude, apiKey
-                )
+            while (true) {
+                val result = safeApiCall {
+                    weatherApi.getWeatherForecast(
+                        latitude, longitude, apiKey
+                    )
+                }
+                //val mappedResult = mapToWeatherForecastDomain(result)
+                emit(result)
+                delay(5000)
             }
-            val mappedResult = mapToWeatherForecastDomain(result)
-            emit(mappedResult)
 
         }.flowOn(ioDispatcher).onStart {
             emit(NetworkResult.Loading)
