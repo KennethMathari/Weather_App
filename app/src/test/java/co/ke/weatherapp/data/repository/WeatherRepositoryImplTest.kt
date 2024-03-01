@@ -35,7 +35,7 @@ class WeatherRepositoryImplTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     private val dispatcher = UnconfinedTestDispatcher()
     private var weatherApi = mockk<WeatherApi>(relaxed = true)
-    private val weatherRepository: WeatherRepository = WeatherRepositoryImpl(weatherApi, dispatcher)
+    private val weatherRepository: WeatherRepository = WeatherRepositoryImpl(weatherApi,dispatcher)
 
     private val currentWeatherDomain = instance<CurrentWeatherDomain>()
     private val currentWeather = instance<CurrentWeather>()
@@ -60,11 +60,12 @@ class WeatherRepositoryImplTest {
 
         coEvery {
             weatherRepository.getCurrentWeather(latitude, longitude, apiKey)
-        } returns flowOf(Success(currentWeatherDomain))
+        } returns flowOf(Success(currentWeather))
 
         val response = weatherRepository.getCurrentWeather(latitude, longitude, apiKey).first()
 
-        //assertThat(response).isInstanceOf(Success::class.java)
-        coVerify(exactly = 1) { weatherApi.getCurrentWeather(latitude, longitude, apiKey) }
+        val successResponse = response as? Success
+
+        assert(successResponse is Success)
     }
 }

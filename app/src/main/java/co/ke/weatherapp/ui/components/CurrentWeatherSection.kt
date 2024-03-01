@@ -29,46 +29,42 @@ import java.util.Locale
 
 @Composable
 fun CurrentWeatherSection(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     weatherInfo: WeatherInfo
 ) {
     Column(
         modifier = modifier.fillMaxWidth()
     ) {
         Box(
-            modifier = modifier
+            modifier = Modifier
                 .weight(1f)
                 .fillMaxHeight()
         ) {
-            //Image part
-            val image: Painter =
-                painterResource(id = weatherInfo.weatherType.imageRes)
+            // Image
+            val image: Painter = painterResource(id = weatherInfo.weatherType.imageRes)
             Image(
                 painter = image,
                 contentDescription = null,
-                modifier = modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize(),
                 alignment = Alignment.BottomCenter
             )
 
-            Box(
-                modifier = modifier
+            // Menu Icon
+            Icon(
+                painter = painterResource(id = R.drawable.baseline_menu_24),
+                contentDescription = null,
+                modifier = Modifier
                     .padding(16.dp)
                     .align(Alignment.TopStart)
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.baseline_menu_24),
-                    contentDescription = null,
-                    modifier = modifier
-                        .size(35.dp)
-                        .clickable {},
-                    tint = Color.White
-                )
+                    .size(35.dp)
+                    .clickable { },
+                tint = Color.White
+            )
 
-            }
-
+            // Weather Info
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = modifier
+                modifier = Modifier
                     .align(Alignment.Center)
                     .padding(bottom = 80.dp, end = 15.dp)
             ) {
@@ -90,25 +86,25 @@ fun CurrentWeatherSection(
                 )
             }
 
+            // Location
             Row(
-                modifier = modifier
+                modifier = Modifier
                     .align(Alignment.TopEnd)
                     .padding(16.dp)
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.pin),
                     contentDescription = null,
-                    modifier = modifier
+                    modifier = Modifier
                         .size(25.dp)
                         .padding(end = 5.dp),
                     tint = Color.White
                 )
                 Text(
-                    text = weatherInfo.currentWeather.name, color = Color.White
+                    text = weatherInfo.currentWeather.name,
+                    color = Color.White
                 )
             }
-
-
         }
     }
 }

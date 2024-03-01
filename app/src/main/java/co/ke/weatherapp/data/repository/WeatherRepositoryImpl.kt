@@ -36,7 +36,6 @@ class WeatherRepositoryImpl @Inject constructor(
                         latitude, longitude, apiKey
                     )
                 }
-                //val mappedResult = mapToCurrentWeatherDomain(result)
                 emit(result)
                 delay(5000)
             }
@@ -58,12 +57,12 @@ class WeatherRepositoryImpl @Inject constructor(
                         latitude, longitude, apiKey
                     )
                 }
-                //val mappedResult = mapToWeatherForecastDomain(result)
                 emit(result)
                 delay(5000)
             }
 
-        }.flowOn(ioDispatcher).onStart {
+        }.flowOn(ioDispatcher)
+            .onStart {
             emit(NetworkResult.Loading)
         }
     }
