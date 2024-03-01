@@ -1,5 +1,6 @@
 package co.ke.weatherapp.ui.viewmodel
 
+import android.location.Location
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.ke.weatherapp.BuildConfig
@@ -40,12 +41,6 @@ class WeatherViewModel @Inject constructor(
 
     fun getWeatherInfo() {
         viewModelScope.launch(ioDispatcher) {
-
-            _weatherState.update { currentWeatherState ->
-                currentWeatherState.copy(
-                    isLoading = true, errorMessage = null
-                )
-            }
 
             locationTracker.getCurrentLocation()?.let { location ->
                 val latitude = location.latitude.toString()
@@ -117,6 +112,53 @@ class WeatherViewModel @Inject constructor(
                     )
                 }
             }
+
+        }
+    }
+
+    fun getWeatherByCityName(cityName: String){
+        viewModelScope.launch(ioDispatcher) {
+
+            _weatherState.update { currentWeatherState ->
+                currentWeatherState.copy(
+                    isLoading = true, errorMessage = null
+                )
+            }
+
+            weatherRepository.getWeatherByCityName(cityName, apiKey)
+                .map {
+                    mapToCurrentWeatherDomain(it)
+                }.collect{ result->
+                    when(result){
+                        is NetworkResult.Success -> {
+                            _weatherState.update { currentWeatherState ->
+                                currentWeatherState.copy(
+                                    weatherInfo = WeatherInfo(
+                                        currentWeather = result.data,
+                                        weatherType = getWeatherType(result.data.weather[0].id)
+                                    ), isLoading = false, errorMessage = null
+                                )
+                            }
+                        }
+                        is NetworkResult.Error -> {
+                            _weatherState.update { currentWeatherState ->
+                                currentWeatherState.copy(
+                                    isLoading = false,
+                                    errorMessage = result.errorDetails.message
+                                )
+                            }
+                        }
+                        is NetworkResult.Loading->{
+                            _weatherState.update { currentWeatherState ->
+                                currentWeatherState.copy(
+                                    isLoading = true,
+                                    errorMessage = null
+                                )
+                            }
+                        }
+
+                    }
+                }
 
         }
     }

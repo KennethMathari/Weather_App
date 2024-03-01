@@ -20,4 +20,10 @@ interface WeatherApi {
         @Query("lon") longitude: String,
         @Query("appid") apiKey: String
     ): WeatherForecast
+
+    @GET("weather")
+    suspend fun getWeatherByCityName(
+        @Query("q") cityName: String,
+        @Query("appid") apiKey: String
+    ): CurrentWeather
 }

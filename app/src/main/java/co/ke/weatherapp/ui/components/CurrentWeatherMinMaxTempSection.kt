@@ -33,17 +33,17 @@ fun CurrentWeatherMinMaxTempSection(
             verticalAlignment = Alignment.CenterVertically
         ) {
             TemperatureColumn(
-                temperature = weatherInfo.currentWeather.main.tempMin,
+                temperature = weatherInfo.currentWeather?.main?.tempMin ?: 0.0,
                 label = "min"
             )
 
             TemperatureColumn(
-                temperature = weatherInfo.currentWeather.main.temp,
+                temperature = weatherInfo.currentWeather?.main?.temp ?: 0.0,
                 label = "Current"
             )
 
             TemperatureColumn(
-                temperature = weatherInfo.currentWeather.main.tempMax,
+                temperature = weatherInfo.currentWeather?.main?.tempMax ?: 0.0,
                 label = "max"
             )
         }

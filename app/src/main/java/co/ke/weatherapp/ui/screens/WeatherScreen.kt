@@ -45,7 +45,13 @@ fun WeatherScreen(
                             .fillMaxSize()
                     ) {
                         // First Row
-                        CurrentWeatherSection(modifier = modifier, weatherInfo = weatherInfo)
+                        CurrentWeatherSection(modifier = modifier,
+                            weatherInfo = weatherInfo,
+                            onLocationSearchClicked = {
+                                if (it.isNotBlank()) {
+                                    weatherViewModel.getWeatherByCityName(it)
+                                }
+                            })
                     }
 
                     Row(

@@ -28,7 +28,7 @@ fun WeatherForecastSection(
     LazyColumn(
         modifier = modifier.padding(8.dp)
     ) {
-        items(weatherInfo.weatherForecast.list) { weatherForecastInfoDomain ->
+        items(weatherInfo.weatherForecast?.list ?: emptyList()) { weatherForecastInfoDomain ->
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
