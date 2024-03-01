@@ -36,7 +36,7 @@ fun CurrentWeatherSection(
         modifier = modifier.fillMaxWidth()
     ) {
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .weight(1f)
                 .fillMaxHeight()
         ) {
@@ -53,7 +53,7 @@ fun CurrentWeatherSection(
             Icon(
                 painter = painterResource(id = R.drawable.baseline_menu_24),
                 contentDescription = null,
-                modifier = Modifier
+                modifier = modifier
                     .padding(16.dp)
                     .align(Alignment.TopStart)
                     .size(35.dp)

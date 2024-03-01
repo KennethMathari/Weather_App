@@ -23,49 +23,41 @@ import co.ke.weatherapp.ui.utils.toDayOfWeek
 
 @Composable
 fun WeatherForecastSection(
-    modifier: Modifier,
-    weatherInfo: WeatherInfo) {
-
+    modifier: Modifier, weatherInfo: WeatherInfo
+) {
     LazyColumn(
-        modifier = modifier
-            .padding(8.dp)
-            .fillMaxWidth()
+        modifier = modifier.padding(8.dp)
     ) {
-        weatherInfo.weatherForecast.let {
-            items(it.list) {weatherForecastInfoDomain->
-                Row(
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .padding(
-                            horizontal = 16.dp, vertical = 20.dp
-                        )
-                ) {
-                    Text(
-                        text = weatherForecastInfoDomain.dt.toDayOfWeek(),
-                        modifier = modifier.weight(1f),
-                        style = TextStyle(
-                            color = Color.White, fontSize = 20.sp
-                        )
+        items(weatherInfo.weatherForecast.list) { weatherForecastInfoDomain ->
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 20.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = weatherForecastInfoDomain.dt.toDayOfWeek(),
+                    modifier = Modifier.weight(1f),
+                    style = TextStyle(
+                        color = Color.White, fontSize = 20.sp
                     )
+                )
 
-                    Image(
-                        painter = painterResource(id = weatherInfo.weatherType.iconRes),
-                        contentDescription = null,
-                        modifier = modifier
-                            .weight(1f)
-                            .size(30.dp),
-                        alignment = Alignment.Center
-                    )
+                Image(
+                    painter = painterResource(id = weatherInfo.weatherType.iconRes),
+                    contentDescription = null,
+                    modifier = Modifier.size(30.dp),
+                    alignment = Alignment.Center
+                )
 
-                    Text(
-                        text = weatherForecastInfoDomain.main.temp.convertKelvinToCelsius(),
-                        modifier = modifier.weight(1f),
-                        style = TextStyle(
-                            color = Color.White, fontSize = 20.sp
-                        ),
-                        textAlign = TextAlign.End
-                    )
-                }
+                Text(
+                    text = weatherForecastInfoDomain.main.temp.convertKelvinToCelsius(),
+                    modifier = Modifier.weight(1f),
+                    style = TextStyle(
+                        color = Color.White, fontSize = 20.sp
+                    ),
+                    textAlign = TextAlign.End
+                )
             }
         }
     }

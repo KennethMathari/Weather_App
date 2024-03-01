@@ -1,10 +1,8 @@
 package co.ke.weatherapp.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Divider
@@ -21,78 +19,63 @@ import co.ke.weatherapp.ui.utils.convertKelvinToCelsius
 
 @Composable
 fun CurrentWeatherMinMaxTempSection(
-    modifier: Modifier, weatherInfo: WeatherInfo
+    modifier: Modifier,
+    weatherInfo: WeatherInfo
 ) {
-
-    Column {
-        Box(
-            modifier = modifier
-                .weight(1f)
-                .fillMaxHeight()
+    Column(
+        modifier = modifier.fillMaxWidth()
+    ) {
+        Row(
+            modifier = Modifier
                 .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 5.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
+            TemperatureColumn(
+                temperature = weatherInfo.currentWeather.main.tempMin,
+                label = "min"
+            )
 
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight()
-                    .padding(horizontal = 16.dp, vertical = 5.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column {
-                    Text(
-                        text = weatherInfo.currentWeather.main.tempMin.convertKelvinToCelsius(),
-                        color = Color.White,
-                        style = TextStyle(
-                            fontSize = 20.sp
-                        )
-                    )
-                    Text(
-                        text = "min", color = Color.White, style = TextStyle(
-                            fontSize = 18.sp
-                        )
-                    )
-                }
+            TemperatureColumn(
+                temperature = weatherInfo.currentWeather.main.temp,
+                label = "Current"
+            )
 
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = weatherInfo.currentWeather.main.temp.convertKelvinToCelsius(),
-                        color = Color.White,
-                        style = TextStyle(
-                            fontSize = 20.sp
-                        )
-                    )
-                    Text(
-                        text = "Current", color = Color.White, style = TextStyle(
-                            fontSize = 18.sp
-                        )
-                    )
-                }
-
-                Column(
-                    horizontalAlignment = Alignment.End
-                ) {
-                    Text(
-                        text = weatherInfo.currentWeather.main.tempMax.convertKelvinToCelsius(),
-                        color = Color.White,
-                        style = TextStyle(
-                            fontSize = 20.sp
-                        )
-                    )
-                    Text(
-                        text = "max", color = Color.White, style = TextStyle(
-                            fontSize = 18.sp
-                        )
-                    )
-                }
-            }
+            TemperatureColumn(
+                temperature = weatherInfo.currentWeather.main.tempMax,
+                label = "max"
+            )
         }
 
         Divider(
-            thickness = 1.dp, color = Color.White
+            thickness = 1.dp,
+            color = Color.White
+        )
+    }
+}
+
+@Composable
+private fun TemperatureColumn(
+    temperature: Double,
+    label: String
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = temperature.convertKelvinToCelsius(),
+            color = Color.White,
+            style = TextStyle(
+                fontSize = 20.sp
+            )
+        )
+        Text(
+            text = label,
+            color = Color.White,
+            style = TextStyle(
+                fontSize = 18.sp
+            )
         )
     }
 }
