@@ -12,6 +12,7 @@ import co.ke.weatherapp.domain.WeatherType
 import co.ke.weatherapp.domain.mappers.mapToCurrentWeatherDomain
 import co.ke.weatherapp.domain.mappers.mapToWeatherForecastDomain
 import co.ke.weatherapp.ui.state.WeatherInfo
+import co.ke.weatherapp.ui.utils.filterFor1000h
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -82,7 +83,7 @@ class WeatherRepositoryImpl @Inject constructor(
                         NetworkResult.Success(
                             WeatherInfo(
                                 currentWeather = mapToCurrentWeatherDomain(currentWeather),
-                                weatherForecast = mapToWeatherForecastDomain(weatherForecast),
+                                weatherForecast = mapToWeatherForecastDomain(weatherForecast).filterFor1000h(),
                                 weatherType = WeatherType.getWeatherType(
                                     currentWeather.weather[0].id ?: 0
                                 )
