@@ -26,4 +26,5 @@ interface WeatherApi {
         @Query("q") cityName: String,
         @Query("appid") apiKey: String
     ): CurrentWeather
+
 }

@@ -78,6 +78,27 @@ fun mapToCurrentWeatherDomain(networkResult: NetworkResult<CurrentWeather>): Net
     }
 }
 
+fun mapToCurrentWeatherDomain(currentWeather: CurrentWeather): CurrentWeatherDomain{
+    return CurrentWeatherDomain(
+        dt = currentWeather.dt,
+        id = currentWeather.id,
+        main = mapToMainDomain(currentWeather.main),
+        coord = mapToCoordDomain(currentWeather.coord),
+        name = currentWeather.name,
+        weather = currentWeather.weather.map {
+            mapToWeatherDomain(it)
+        }
+    )
+}
+
+fun mapToWeatherForecastDomain(weatherForecast: WeatherForecast): WeatherForecastDomain{
+    return WeatherForecastDomain(
+        list = weatherForecast.list.map {
+            mapToWeatherForecastInfoDomain(it)
+        }
+    )
+}
+
 fun mapToCoordDomain(coord: Coord): CoordDomain{
     return CoordDomain(
         lat = coord.lat,
