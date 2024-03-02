@@ -13,6 +13,7 @@
 * Display the current weather at the user's location
 * Display the weather forecast for the next 5 days based on the user's location
 * Change the background image depending on the type of weather(Cloudy, Sunny and Rainy)
+* Search for weather details by city name
 
 ## Tech-stack
 * [Kotlin](https://kotlinlang.org/) - a cross-platform, statically typed, general-purpose programming language with type inference.
@@ -31,7 +32,7 @@
 * [Truth](https://github.com/google/truth) - Truth makes your test assertions and failure messages more readable.
 
 ## App Screenshot!
-> ![](WhatsApp%20Image%202024-02-29%20at%2009.16.50.jpeg)
+> ![](screenshot.jpeg)
 
 
 

@@ -1,11 +1,13 @@
 package co.ke.weatherapp.domain.mappers
 
+import co.ke.weatherapp.data.network.dto.Coord
 import co.ke.weatherapp.data.network.dto.CurrentWeather
 import co.ke.weatherapp.data.network.dto.Main
 import co.ke.weatherapp.data.network.dto.Weather
 import co.ke.weatherapp.data.network.dto.WeatherForecast
 import co.ke.weatherapp.data.network.dto.WeatherForecastInfo
 import co.ke.weatherapp.data.network.utils.NetworkResult
+import co.ke.weatherapp.domain.model.CoordDomain
 import co.ke.weatherapp.domain.model.CurrentWeatherDomain
 import co.ke.weatherapp.domain.model.MainDomain
 import co.ke.weatherapp.domain.model.WeatherDomain
@@ -63,7 +65,9 @@ fun mapToCurrentWeatherDomain(networkResult: NetworkResult<CurrentWeather>): Net
                 name = networkResult.data.name,
                 weather = networkResult.data.weather.map {
                     mapToWeatherDomain(it)
-                })
+                },
+                coord = mapToCoordDomain(networkResult.data.coord)
+            )
             NetworkResult.Success(currentWeatherDomain)
         }
 
@@ -72,4 +76,11 @@ fun mapToCurrentWeatherDomain(networkResult: NetworkResult<CurrentWeather>): Net
             NetworkResult.Loading
         }
     }
+}
+
+fun mapToCoordDomain(coord: Coord): CoordDomain{
+    return CoordDomain(
+        lat = coord.lat,
+        lon = coord.lon
+    )
 }

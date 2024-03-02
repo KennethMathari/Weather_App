@@ -119,12 +119,6 @@ class WeatherViewModel @Inject constructor(
     fun getWeatherByCityName(cityName: String){
         viewModelScope.launch(ioDispatcher) {
 
-            _weatherState.update { currentWeatherState ->
-                currentWeatherState.copy(
-                    isLoading = true, errorMessage = null
-                )
-            }
-
             weatherRepository.getWeatherByCityName(cityName, apiKey)
                 .map {
                     mapToCurrentWeatherDomain(it)
