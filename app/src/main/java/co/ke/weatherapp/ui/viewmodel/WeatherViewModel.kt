@@ -12,7 +12,7 @@ import co.ke.weatherapp.domain.mappers.mapToCurrentWeatherDomain
 import co.ke.weatherapp.domain.mappers.mapToWeatherForecastDomain
 import co.ke.weatherapp.ui.state.WeatherInfo
 import co.ke.weatherapp.ui.state.WeatherState
-import co.ke.weatherapp.ui.utils.filterFor1000h
+import co.ke.weatherapp.domain.utils.filterFor1000h
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow

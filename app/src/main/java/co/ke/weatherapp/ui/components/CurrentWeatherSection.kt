@@ -86,7 +86,7 @@ fun CurrentWeatherSection(
                     color = Color.White,
                     fontWeight = FontWeight.Bold,
                     style = TextStyle(
-                        fontSize = 70.sp
+                        fontSize = 60.sp
                     )
                 )
 

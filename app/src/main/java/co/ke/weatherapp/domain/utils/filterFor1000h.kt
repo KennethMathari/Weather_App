@@ -1,4 +1,4 @@
-package co.ke.weatherapp.ui.utils
+package co.ke.weatherapp.domain.utils
 
 import co.ke.weatherapp.domain.model.WeatherForecastDomain
 
