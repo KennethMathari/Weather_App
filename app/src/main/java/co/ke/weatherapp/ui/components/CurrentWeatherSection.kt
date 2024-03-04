@@ -14,7 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.DrawerState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,15 +36,20 @@ import androidx.compose.ui.unit.sp
 import co.ke.weatherapp.R
 import co.ke.weatherapp.ui.state.WeatherInfo
 import co.ke.weatherapp.ui.utils.convertKelvinToCelsius
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 @Composable
 fun CurrentWeatherSection(
     modifier: Modifier = Modifier,
     weatherInfo: WeatherInfo,
-    onLocationSearchClicked: (String) -> Unit
+    onLocationSearchClicked: (String) -> Unit,
+    drawerState: DrawerState,
+    scope: CoroutineScope
 ) {
     var locationInput by remember { mutableStateOf("") }
+
 
     Column(
         modifier = modifier.fillMaxWidth()
@@ -70,7 +76,15 @@ fun CurrentWeatherSection(
                     .padding(16.dp)
                     .align(Alignment.TopStart)
                     .size(45.dp)
-                    .clickable { },
+                    .clickable(
+                        onClick = {
+                            scope.launch {
+                                drawerState.apply {
+                                    if (isClosed) open() else close()
+                                }
+                            }
+                        }
+                    ),
                 tint = Color.White
             )
 
@@ -138,7 +152,8 @@ fun CurrentWeatherSection(
                         tint = Color.White,
                         modifier = Modifier.clickable(onClick = {
                             onLocationSearchClicked(locationInput)
-                        }))
+                        })
+                    )
                 })
 
         }

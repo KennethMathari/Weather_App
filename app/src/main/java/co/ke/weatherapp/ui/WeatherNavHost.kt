@@ -17,7 +17,11 @@ fun WeatherNavHost(
     NavHost(navController = navController, startDestination = WeatherRoutes.Weather.name) {
 
         composable(route = WeatherRoutes.Weather.name) {
-            WeatherScreen(weatherViewModel=weatherViewModel)
+            WeatherScreen(
+                weatherViewModel=weatherViewModel,
+                onDrawerItemClicked = {
+                    navController.navigate(it)
+                })
         }
     }
 
