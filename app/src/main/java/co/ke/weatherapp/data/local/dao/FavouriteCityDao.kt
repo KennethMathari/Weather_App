@@ -10,12 +10,12 @@ import co.ke.weatherapp.data.local.entities.FavouriteCityEntity
 interface FavouriteCityDao {
 
     @Query("SELECT * FROM favourite_city")
-    fun getAllCities(): List<FavouriteCityEntity>
+    suspend fun getFavouriteCities(): List<FavouriteCityEntity>
 
     @Upsert
-    fun saveFavouriteCity(vararg favouriteCityEntity: FavouriteCityEntity)
+    suspend fun saveFavouriteCity(vararg favouriteCityEntity: FavouriteCityEntity)
 
     @Delete
-    fun deleteCity(favouriteCityEntity: FavouriteCityEntity)
+    suspend fun deleteCity(favouriteCityEntity: FavouriteCityEntity)
 
 }

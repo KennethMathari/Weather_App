@@ -135,6 +135,11 @@ fun CurrentWeatherSection(
                         contentDescription = stringResource(R.string.add_to_favourites),
                         tint = Color.White,
                         modifier = modifier.padding(start = 5.dp)
+                            .clickable(
+                                onClick = {
+
+                                }
+                            )
                     )
                 }
 

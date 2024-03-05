@@ -9,13 +9,14 @@ import co.ke.weatherapp.data.local.entities.FavouriteCityEntity
     entities = [
         FavouriteCityEntity::class
     ],
-    version = 1
+    version = 1,
+    exportSchema = false
 )
 abstract class WeatherDatabase: RoomDatabase() {
 
     companion object
     {
-        val DATABASE_NAME: String = "weather_db"
+        const val DATABASE_NAME: String = "weather_db"
     }
 
     abstract fun favouriteCityDao(): FavouriteCityDao

@@ -28,6 +28,6 @@ val items = listOf(
         selectedIcon = Icons.Filled.Favorite,
         unselectedIcon = Icons.Filled.Favorite,
         onItemClicked = {},
-        route = ""
+        route = WeatherRoutes.FavouriteCities.name
     )
 )

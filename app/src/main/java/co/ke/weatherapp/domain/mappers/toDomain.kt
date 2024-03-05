@@ -1,5 +1,6 @@
 package co.ke.weatherapp.domain.mappers
 
+import co.ke.weatherapp.data.local.entities.FavouriteCityEntity
 import co.ke.weatherapp.data.network.dto.Coord
 import co.ke.weatherapp.data.network.dto.CurrentWeather
 import co.ke.weatherapp.data.network.dto.Main
@@ -9,6 +10,7 @@ import co.ke.weatherapp.data.network.dto.WeatherForecastInfo
 import co.ke.weatherapp.data.network.utils.NetworkResult
 import co.ke.weatherapp.domain.model.CoordDomain
 import co.ke.weatherapp.domain.model.CurrentWeatherDomain
+import co.ke.weatherapp.domain.model.FavouriteCityDomain
 import co.ke.weatherapp.domain.model.MainDomain
 import co.ke.weatherapp.domain.model.WeatherDomain
 import co.ke.weatherapp.domain.model.WeatherForecastDomain
@@ -104,4 +106,16 @@ fun mapToCoordDomain(coord: Coord): CoordDomain{
         lat = coord.lat,
         lon = coord.lon
     )
+}
+
+fun List<FavouriteCityEntity>.toDomainList(): List<FavouriteCityDomain>{
+    return map {favouriteCityEntity ->
+        FavouriteCityDomain(
+            id = favouriteCityEntity.id,
+            cityName = favouriteCityEntity.cityName,
+            latitude = favouriteCityEntity.latitude,
+            longitude = favouriteCityEntity.longitude
+        )
+
+    }
 }
