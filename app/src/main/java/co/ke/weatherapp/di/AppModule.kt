@@ -1,6 +1,10 @@
 package co.ke.weatherapp.di
 
 import android.app.Application
+import android.content.Context
+import androidx.room.Room
+import co.ke.weatherapp.data.local.WeatherDatabase
+import co.ke.weatherapp.data.local.dao.FavouriteCityDao
 import co.ke.weatherapp.data.network.services.WeatherApi
 import co.ke.weatherapp.utils.Constants.BASE_URL
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -10,6 +14,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -25,28 +30,19 @@ object AppModule {
 
     @Provides
     fun provideMoshi(): Moshi {
-        return Moshi.Builder()
-            .add(KotlinJsonAdapterFactory())
-            .build()
+        return Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
     }
 
     @Provides
     fun provideHttpClient(): OkHttpClient {
-        return OkHttpClient
-            .Builder()
-            .readTimeout(15, TimeUnit.SECONDS)
-            .connectTimeout(15, TimeUnit.SECONDS)
-            .retryOnConnectionFailure(true)
-            .build()
+        return OkHttpClient.Builder().readTimeout(15, TimeUnit.SECONDS)
+            .connectTimeout(15, TimeUnit.SECONDS).retryOnConnectionFailure(true).build()
     }
 
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient, moshi: Moshi): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(okHttpClient)
-            .addConverterFactory(MoshiConverterFactory.create(moshi))
-            .build()
+        return Retrofit.Builder().baseUrl(BASE_URL).client(okHttpClient)
+            .addConverterFactory(MoshiConverterFactory.create(moshi)).build()
     }
 
     @Provides
@@ -62,6 +58,20 @@ object AppModule {
     @IoDispatcher
     @Provides
     fun provideIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
+
+    @Provides
+    fun provideWeatherDatabase(@ApplicationContext context: Context): WeatherDatabase {
+        return Room.databaseBuilder(
+            context,
+            WeatherDatabase::class.java,
+            WeatherDatabase.DATABASE_NAME
+        ).fallbackToDestructiveMigration().build()
+    }
+
+    @Provides
+    fun provideFavouriteCityDao(weatherDatabase: WeatherDatabase): FavouriteCityDao {
+        return weatherDatabase.favouriteCityDao()
+    }
 
 }
 

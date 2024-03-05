@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">WeatherApp</string>
     <string name="an_error_occurred">An Error Occurred!</string>
+    <string name="add_to_favourites">Add to Favourites</string>
 </resources>
