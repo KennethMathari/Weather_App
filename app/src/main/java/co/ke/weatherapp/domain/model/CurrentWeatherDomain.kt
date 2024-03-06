@@ -6,5 +6,6 @@ data class CurrentWeatherDomain(
     val main: MainDomain,
     var name: String,
     val coord: CoordDomain,
-    val weather: List<WeatherDomain>
+    val weather: List<WeatherDomain>,
+    var isFavourite: Boolean
 )

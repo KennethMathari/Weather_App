@@ -3,13 +3,16 @@ package co.ke.weatherapp.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.ke.weatherapp.BuildConfig
+import co.ke.weatherapp.data.local.entities.FavouriteCityEntity
 import co.ke.weatherapp.data.location.LocationTracker
 import co.ke.weatherapp.data.network.utils.NetworkResult
+import co.ke.weatherapp.data.repository.FavouriteCityRepository
 import co.ke.weatherapp.data.repository.WeatherRepository
 import co.ke.weatherapp.di.IoDispatcher
 import co.ke.weatherapp.domain.WeatherType.Companion.getWeatherType
 import co.ke.weatherapp.domain.mappers.mapToCurrentWeatherDomain
 import co.ke.weatherapp.domain.mappers.mapToWeatherForecastDomain
+import co.ke.weatherapp.domain.model.CurrentWeatherDomain
 import co.ke.weatherapp.ui.state.WeatherInfo
 import co.ke.weatherapp.ui.state.WeatherState
 import co.ke.weatherapp.domain.utils.filterFor1000h
@@ -31,6 +34,7 @@ class WeatherViewModel @Inject constructor(
     private val weatherRepository: WeatherRepository,
     private val locationTracker: LocationTracker,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+    private val favouriteCityRepository: FavouriteCityRepository
 ) : ViewModel() {
 
     private val _weatherState = MutableStateFlow(WeatherState())
@@ -74,7 +78,15 @@ class WeatherViewModel @Inject constructor(
                             _weatherState.update { currentWeatherState ->
                                 currentWeatherState.copy(
                                     weatherInfo = WeatherInfo(
-                                        currentWeather = currentWeather.data,
+                                        currentWeather = CurrentWeatherDomain(
+                                            dt = currentWeather.data.dt,
+                                            id = currentWeather.data.id,
+                                            main = currentWeather.data.main,
+                                            name = currentWeather.data.name,
+                                            coord = currentWeather.data.coord,
+                                            isFavourite = isFavouriteCity(currentWeather.data),
+                                            weather = currentWeather.data.weather
+                                        ),
                                         weatherForecast = weatherForecast.data.filterFor1000h(),
                                         weatherType = getWeatherType(currentWeather.data.weather[0].id)
                                     ), isLoading = false, errorMessage = null
@@ -115,7 +127,7 @@ class WeatherViewModel @Inject constructor(
         }
     }
 
-    fun getWeatherByCityName(cityName: String) {
+    suspend fun getWeatherByCityName(cityName: String) {
         viewModelScope.launch(ioDispatcher) {
             weatherRepository.getWeatherByCityName(cityName, apiKey)
                 .collect { result ->
@@ -123,7 +135,15 @@ class WeatherViewModel @Inject constructor(
                         is NetworkResult.Success -> {
                             _weatherState.update { currentWeatherState ->
                                 currentWeatherState.copy(
-                                    weatherInfo = result.data,
+                                    weatherInfo = result.data.currentWeather?.let {
+                                        getWeatherType(it.weather[0].id)
+                                    }?.let {
+                                        WeatherInfo(
+                                            weatherForecast = result.data.weatherForecast,
+                                            currentWeather = result.data.currentWeather,
+                                            weatherType = it
+                                        )
+                                    },
                                     isLoading = false,
                                     errorMessage = null
                                 )
@@ -154,6 +174,31 @@ class WeatherViewModel @Inject constructor(
                 }
 
         }
+    }
+
+    suspend fun saveFavouriteCity(favouriteCityEntity: FavouriteCityEntity){
+        viewModelScope.launch(ioDispatcher) {
+            favouriteCityRepository.saveFavouriteCity(favouriteCityEntity)
+        }
+    }
+
+    suspend fun deleteFavouriteCity(favouriteCityEntity: FavouriteCityEntity){
+        viewModelScope.launch(ioDispatcher) {
+            favouriteCityRepository.deleteCity(favouriteCityEntity)
+        }
+    }
+
+     private suspend fun isFavouriteCity(currentWeatherDomain: CurrentWeatherDomain): Boolean{
+        val favouriteCities = favouriteCityRepository.getFavouriteCities()
+
+        return favouriteCities.contains(
+            FavouriteCityEntity(
+                id = currentWeatherDomain.id,
+                cityName = currentWeatherDomain.name,
+                latitude = currentWeatherDomain.coord.lat.toString(),
+                longitude = currentWeatherDomain.coord.lon.toString()
+            )
+        )
     }
 
 

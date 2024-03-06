@@ -68,7 +68,8 @@ fun mapToCurrentWeatherDomain(networkResult: NetworkResult<CurrentWeather>): Net
                 weather = networkResult.data.weather.map {
                     mapToWeatherDomain(it)
                 },
-                coord = mapToCoordDomain(networkResult.data.coord)
+                coord = mapToCoordDomain(networkResult.data.coord),
+                isFavourite = false
             )
             NetworkResult.Success(currentWeatherDomain)
         }
@@ -89,7 +90,8 @@ fun mapToCurrentWeatherDomain(currentWeather: CurrentWeather): CurrentWeatherDom
         name = currentWeather.name,
         weather = currentWeather.weather.map {
             mapToWeatherDomain(it)
-        }
+        },
+        isFavourite = false
     )
 }
 

@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalDrawerSheet
@@ -42,7 +41,7 @@ import kotlinx.coroutines.launch
 fun WeatherScreen(
     modifier: Modifier = Modifier,
     weatherViewModel: WeatherViewModel,
-    onDrawerItemClicked : (String)-> Unit
+    onDrawerItemClicked: (String) -> Unit
 ) {
     val weatherState by weatherViewModel.weatherState.collectAsStateWithLifecycle()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -104,7 +103,6 @@ fun WeatherScreen(
                             .background(weatherInfo.weatherType.color)
                             .statusBarsPadding()
                             .navigationBarsPadding()
-                            .systemBarsPadding()
                     ) {
                         Row(
                             modifier = modifier
@@ -117,11 +115,28 @@ fun WeatherScreen(
                                 weatherInfo = weatherInfo,
                                 onLocationSearchClicked = {
                                     if (it.isNotBlank()) {
-                                        weatherViewModel.getWeatherByCityName(it)
+                                        scope.launch {
+                                            weatherViewModel.getWeatherByCityName(it)
+                                        }
                                     }
                                 },
                                 drawerState = drawerState,
-                                scope = scope
+                                scope = scope,
+                                onSaveFavouriteCity = { favouriteCityEntity ->
+                                    scope.launch {
+                                        if (favouriteCityEntity != null) {
+                                            weatherViewModel.saveFavouriteCity(favouriteCityEntity)
+                                        }
+                                    }
+
+                                },
+                                onDeleteFavouriteCity = { favouriteCityEntity ->
+                                    scope.launch {
+                                        if (favouriteCityEntity != null) {
+                                            weatherViewModel.deleteFavouriteCity(favouriteCityEntity)
+                                        }
+                                    }
+                                }
                             )
                         }
 

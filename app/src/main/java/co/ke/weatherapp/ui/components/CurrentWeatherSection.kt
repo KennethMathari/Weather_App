@@ -12,7 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Search
@@ -23,8 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,6 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import co.ke.weatherapp.R
+import co.ke.weatherapp.data.local.entities.FavouriteCityEntity
 import co.ke.weatherapp.ui.state.WeatherInfo
 import co.ke.weatherapp.ui.utils.convertKelvinToCelsius
 import kotlinx.coroutines.CoroutineScope
@@ -49,9 +49,14 @@ fun CurrentWeatherSection(
     weatherInfo: WeatherInfo,
     onLocationSearchClicked: (String) -> Unit,
     drawerState: DrawerState,
-    scope: CoroutineScope
+    scope: CoroutineScope,
+    onSaveFavouriteCity: (FavouriteCityEntity?) -> Unit,
+    onDeleteFavouriteCity: (FavouriteCityEntity?) -> Unit
 ) {
-    var locationInput by remember { mutableStateOf("") }
+    var locationInput by rememberSaveable { mutableStateOf("") }
+    var isFavouriteCity by rememberSaveable {
+        mutableStateOf(weatherInfo.currentWeather?.isFavourite)
+    }
 
 
     Column(
@@ -72,24 +77,20 @@ fun CurrentWeatherSection(
             )
 
             // Menu Icon
-            Icon(
-                painter = painterResource(id = R.drawable.baseline_menu_24),
+            Icon(painter = painterResource(id = R.drawable.baseline_menu_24),
                 contentDescription = null,
                 modifier = modifier
                     .padding(16.dp)
                     .align(Alignment.TopStart)
                     .size(45.dp)
-                    .clickable(
-                        onClick = {
-                            scope.launch {
-                                drawerState.apply {
-                                    if (isClosed) open() else close()
-                                }
+                    .clickable(onClick = {
+                        scope.launch {
+                            drawerState.apply {
+                                if (isClosed) open() else close()
                             }
                         }
-                    ),
-                tint = Color.White
-            )
+                    }),
+                tint = Color.White)
 
             // Weather Info
             Column(
@@ -125,22 +126,48 @@ fun CurrentWeatherSection(
 
                     Text(
                         text = weatherInfo.currentWeather?.name ?: "",
-                        color = Color.White, style = TextStyle(
+                        color = Color.White,
+                        style = TextStyle(
                             fontSize = 15.sp
                         )
                     )
+                    val favouriteIcon = if (isFavouriteCity == true) {
+                        Icons.Filled.Favorite
+                    } else {
+                        Icons.Outlined.FavoriteBorder
+                    }
 
-                    Icon(
-                        imageVector = Icons.Outlined.FavoriteBorder,
+                    Icon(imageVector = favouriteIcon,
                         contentDescription = stringResource(R.string.add_to_favourites),
                         tint = Color.White,
-                        modifier = modifier.padding(start = 5.dp)
-                            .clickable(
-                                onClick = {
+                        modifier = modifier
+                            .padding(start = 5.dp)
+                            .clickable(onClick = {
+                                isFavouriteCity = !isFavouriteCity!!
+                                if (isFavouriteCity == true) {
+                                    //save favourite city
+                                    onSaveFavouriteCity(weatherInfo.currentWeather?.let {
+                                        FavouriteCityEntity(
+                                            id = it.id,
+                                            cityName = it.name,
+                                            latitude = it.coord.lat.toString(),
+                                            longitude = it.coord.lon.toString()
+                                        )
+                                    })
+                                } else {
+                                    //delete favourite city
+                                    onDeleteFavouriteCity(weatherInfo.currentWeather?.let {
+                                        FavouriteCityEntity(
+                                            id = it.id,
+                                            cityName = it.name,
+                                            latitude = it.coord.lat.toString(),
+                                            longitude = it.coord.lon.toString()
+                                        )
+                                    })
 
                                 }
-                            )
-                    )
+
+                            }))
                 }
 
             }
@@ -155,8 +182,7 @@ fun CurrentWeatherSection(
                 ),
                 placeholder = {
                     Text(
-                        text = "Search Location...",
-                        style = TextStyle(
+                        text = "Search Location...", style = TextStyle(
                             color = Color.White
                         )
                     )
@@ -167,7 +193,8 @@ fun CurrentWeatherSection(
                     .align(Alignment.TopEnd)
                     .padding(16.dp),
                 trailingIcon = {
-                    Icon(imageVector = Icons.Outlined.Search,
+                    Icon(
+                        imageVector = Icons.Outlined.Search,
                         contentDescription = null,
                         tint = Color.White,
                         modifier = Modifier.clickable(onClick = {
