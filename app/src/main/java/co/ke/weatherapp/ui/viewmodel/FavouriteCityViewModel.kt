@@ -24,7 +24,11 @@ class FavouriteCityViewModel @Inject constructor(
     private val _favouriteCityState = MutableStateFlow(FavouriteCityState())
     val favouriteCityState: StateFlow<FavouriteCityState> get() = _favouriteCityState.asStateFlow()
 
-    fun getAllFavouriteCities(){
+    init {
+        getAllFavouriteCities()
+    }
+
+    private fun getAllFavouriteCities(){
         viewModelScope.launch(ioDispatcher) {
             val favouriteCities = favouriteCityRepository.getFavouriteCities()
 

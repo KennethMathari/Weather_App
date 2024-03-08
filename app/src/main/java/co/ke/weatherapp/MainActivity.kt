@@ -20,6 +20,7 @@ import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
 import co.ke.weatherapp.ui.WeatherNavHost
 import co.ke.weatherapp.ui.theme.WeatherAppTheme
+import co.ke.weatherapp.ui.viewmodel.FavouriteCityViewModel
 import co.ke.weatherapp.ui.viewmodel.WeatherViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -27,6 +28,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val weatherViewModel: WeatherViewModel by viewModels()
+    private val favouriteCityViewModel: FavouriteCityViewModel by viewModels()
     private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
 
 
@@ -61,7 +63,10 @@ class MainActivity : ComponentActivity() {
                         .fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    WeatherNavHost(navController, weatherViewModel)
+                    WeatherNavHost(
+                        navController,
+                        weatherViewModel,
+                        favouriteCityViewModel)
                 }
             }
         }

@@ -127,7 +127,7 @@ class WeatherViewModel @Inject constructor(
         }
     }
 
-    suspend fun getWeatherByCityName(cityName: String) {
+    fun getWeatherByCityName(cityName: String) {
         viewModelScope.launch(ioDispatcher) {
             weatherRepository.getWeatherByCityName(cityName, apiKey)
                 .collect { result ->
