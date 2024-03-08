@@ -12,7 +12,7 @@
 
 * Display the current weather at the user's location
 * Display the weather forecast for the next 5 days based on the user's location
-* Change the background image depending on the type of weather(Cloudy, Sunny and Rainy)
+* Change the background image & colour depending on the type of weather(Cloudy, Sunny and Rainy)
 * Search for weather details by city name
 * Save different weather locations as favourites
 * View list of favourite weather locations
