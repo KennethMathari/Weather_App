@@ -41,7 +41,8 @@ import kotlinx.coroutines.launch
 fun WeatherScreen(
     modifier: Modifier = Modifier,
     weatherViewModel: WeatherViewModel,
-    onDrawerItemClicked: (String) -> Unit
+    onDrawerItemClicked: (String) -> Unit,
+    onSearchIconClick: ()-> Unit
 ) {
     val weatherState by weatherViewModel.weatherState.collectAsStateWithLifecycle()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -70,7 +71,12 @@ fun WeatherScreen(
                                 selected = index == selectedItemIndex,
                                 onClick = {
                                     selectedItemIndex = index
-                                    onDrawerItemClicked(navigationItem.route)
+                                    if (navigationItem.title == "Home"){
+                                        weatherViewModel.getWeatherInfo()
+                                    }else{
+                                        onDrawerItemClicked(navigationItem.route)
+                                    }
+
                                     scope.launch {
                                         drawerState.close()
                                     }

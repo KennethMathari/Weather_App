@@ -77,7 +77,8 @@ fun CurrentWeatherSection(
             )
 
             // Menu Icon
-            Icon(painter = painterResource(id = R.drawable.baseline_menu_24),
+            Icon(
+                painter = painterResource(id = R.drawable.baseline_menu_24),
                 contentDescription = null,
                 modifier = modifier
                     .padding(16.dp)
@@ -90,7 +91,8 @@ fun CurrentWeatherSection(
                             }
                         }
                     }),
-                tint = Color.White)
+                tint = Color.White
+            )
 
             // Weather Info
             Column(
@@ -137,13 +139,15 @@ fun CurrentWeatherSection(
                         Icons.Outlined.FavoriteBorder
                     }
 
-                    Icon(imageVector = favouriteIcon,
+                    Icon(
+                        imageVector = favouriteIcon,
                         contentDescription = stringResource(R.string.add_to_favourites),
                         tint = Color.White,
                         modifier = modifier
                             .padding(start = 5.dp)
                             .clickable(onClick = {
                                 isFavouriteCity = !isFavouriteCity!!
+
                                 if (isFavouriteCity == true) {
                                     //save favourite city
                                     onSaveFavouriteCity(weatherInfo.currentWeather?.let {
@@ -167,7 +171,8 @@ fun CurrentWeatherSection(
 
                                 }
 
-                            }))
+                            })
+                    )
                 }
 
             }

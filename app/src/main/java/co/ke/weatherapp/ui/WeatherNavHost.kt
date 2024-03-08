@@ -22,6 +22,9 @@ fun WeatherNavHost(
                 weatherViewModel=weatherViewModel,
                 onDrawerItemClicked = {
                     navController.navigate(it)
+                },
+                onSearchIconClick = {
+                    navController.navigate(WeatherRoutes.Weather.name)
                 })
         }
 

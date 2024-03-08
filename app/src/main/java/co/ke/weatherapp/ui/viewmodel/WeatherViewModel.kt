@@ -134,19 +134,29 @@ class WeatherViewModel @Inject constructor(
                     when (result) {
                         is NetworkResult.Success -> {
                             _weatherState.update { currentWeatherState ->
+                                val weatherInfo = result.data.currentWeather?.let { currentWeather ->
+                                    val weatherType = getWeatherType(currentWeather.weather[0].id)
+                                    WeatherInfo(
+                                        weatherForecast = result.data.weatherForecast,
+                                        currentWeather = CurrentWeatherDomain(
+                                            dt = currentWeather.dt,
+                                            id = currentWeather.id,
+                                            main = currentWeather.main,
+                                            name = currentWeather.name,
+                                            coord = currentWeather.coord,
+                                            weather = currentWeather.weather,
+                                            isFavourite = isFavouriteCity(currentWeather)
+                                        ),
+                                        weatherType = weatherType
+                                    )
+                                }
+
                                 currentWeatherState.copy(
-                                    weatherInfo = result.data.currentWeather?.let {
-                                        getWeatherType(it.weather[0].id)
-                                    }?.let {
-                                        WeatherInfo(
-                                            weatherForecast = result.data.weatherForecast,
-                                            currentWeather = result.data.currentWeather,
-                                            weatherType = it
-                                        )
-                                    },
+                                    weatherInfo = weatherInfo,
                                     isLoading = false,
                                     errorMessage = null
                                 )
+
                             }
                         }
 
