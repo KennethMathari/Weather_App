@@ -23,7 +23,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -199,17 +201,17 @@ class WeatherViewModel @Inject constructor(
     }
 
      private suspend fun isFavouriteCity(currentWeatherDomain: CurrentWeatherDomain): Boolean{
+
         val favouriteCities = favouriteCityRepository.getFavouriteCities()
 
         return favouriteCities.contains(
-            FavouriteCityEntity(
-                id = currentWeatherDomain.id,
-                cityName = currentWeatherDomain.name,
-                latitude = currentWeatherDomain.coord.lat.toString(),
-                longitude = currentWeatherDomain.coord.lon.toString()
+                FavouriteCityEntity(
+                    id = currentWeatherDomain.id,
+                    cityName = currentWeatherDomain.name,
+                    latitude = currentWeatherDomain.coord.lat.toString(),
+                    longitude = currentWeatherDomain.coord.lon.toString()
+                )
             )
-        )
+        }
+
     }
-
-
-}

@@ -9,8 +9,6 @@ import co.ke.weatherapp.ui.screens.WeatherScreen
 import co.ke.weatherapp.ui.utils.WeatherRoutes
 import co.ke.weatherapp.ui.viewmodel.FavouriteCityViewModel
 import co.ke.weatherapp.ui.viewmodel.WeatherViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 @Composable
 fun WeatherNavHost(
@@ -23,18 +21,15 @@ fun WeatherNavHost(
 
         composable(route = WeatherRoutes.Weather.name) {
             WeatherScreen(
-                weatherViewModel=weatherViewModel,
+                weatherViewModel = weatherViewModel,
                 onDrawerItemClicked = {
                     navController.navigate(it)
-                },
-                onSearchIconClick = {
-                    navController.navigate(WeatherRoutes.Weather.name)
                 })
         }
 
-        composable(route = WeatherRoutes.FavouriteCities.name){
+        composable(route = WeatherRoutes.FavouriteCities.name) {
             FavouriteCitiesScreen(
-                favouriteCityViewModel= favouriteCityViewModel,
+                favouriteCityViewModel = favouriteCityViewModel,
                 onFavouriteCityClicked = {
                     weatherViewModel.getWeatherByCityName(it)
                     navController.navigate(WeatherRoutes.Weather.name)

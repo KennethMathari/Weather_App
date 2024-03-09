@@ -2,13 +2,16 @@ package co.ke.weatherapp.data.repository
 
 import co.ke.weatherapp.data.local.dao.FavouriteCityDao
 import co.ke.weatherapp.data.local.entities.FavouriteCityEntity
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class FavouriteCityRepositoryImpl @Inject constructor(
     private val favouriteCityDao: FavouriteCityDao
-): FavouriteCityRepository {
+) : FavouriteCityRepository {
     override suspend fun saveFavouriteCity(favouriteCityEntity: FavouriteCityEntity) {
         favouriteCityDao.saveFavouriteCity(favouriteCityEntity)
+
     }
 
     override suspend fun getFavouriteCities(): List<FavouriteCityEntity> {

@@ -42,7 +42,6 @@ fun WeatherScreen(
     modifier: Modifier = Modifier,
     weatherViewModel: WeatherViewModel,
     onDrawerItemClicked: (String) -> Unit,
-    onSearchIconClick: ()-> Unit
 ) {
     val weatherState by weatherViewModel.weatherState.collectAsStateWithLifecycle()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
