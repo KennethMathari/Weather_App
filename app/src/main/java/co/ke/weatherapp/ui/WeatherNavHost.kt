@@ -33,6 +33,9 @@ fun WeatherNavHost(
                 onFavouriteCityClicked = {
                     weatherViewModel.getWeatherByCityName(it)
                     navController.navigate(WeatherRoutes.Weather.name)
+                },
+                onFavouriteCityDelete = {
+                    favouriteCityViewModel.deleteFavouriteCity(it)
                 }
             )
         }

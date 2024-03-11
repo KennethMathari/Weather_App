@@ -1,7 +1,6 @@
 package co.ke.weatherapp.data.repository
 
 import co.ke.weatherapp.data.local.entities.FavouriteCityEntity
-import kotlinx.coroutines.flow.Flow
 
 interface FavouriteCityRepository {
 

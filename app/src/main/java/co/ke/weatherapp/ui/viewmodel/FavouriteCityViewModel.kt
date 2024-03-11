@@ -2,8 +2,10 @@ package co.ke.weatherapp.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.ke.weatherapp.data.local.entities.FavouriteCityEntity
 import co.ke.weatherapp.data.repository.FavouriteCityRepository
 import co.ke.weatherapp.di.IoDispatcher
+import co.ke.weatherapp.domain.mappers.mapFavouriteCityEntityToDomain
 import co.ke.weatherapp.domain.mappers.toDomainList
 import co.ke.weatherapp.ui.state.FavouriteCityState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -41,6 +43,17 @@ class FavouriteCityViewModel @Inject constructor(
 
                 }
             }
+        }
+    }
+
+    fun deleteFavouriteCity(favouriteCityEntity: FavouriteCityEntity){
+        viewModelScope.launch(ioDispatcher) {
+            _favouriteCityState.value = _favouriteCityState.value.copy(
+                favouriteCities = _favouriteCityState.value.favouriteCities.filterNot {
+                    it == mapFavouriteCityEntityToDomain(favouriteCityEntity)
+                }
+            )
+            favouriteCityRepository.deleteCity(favouriteCityEntity)
         }
     }
 }

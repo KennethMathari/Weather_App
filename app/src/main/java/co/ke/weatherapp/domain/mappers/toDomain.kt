@@ -121,3 +121,12 @@ fun List<FavouriteCityEntity>.toDomainList(): List<FavouriteCityDomain>{
 
     }
 }
+
+fun mapFavouriteCityEntityToDomain(entity: FavouriteCityEntity): FavouriteCityDomain {
+    return FavouriteCityDomain(
+        id = entity.id,
+        cityName = entity.cityName,
+        latitude = entity.latitude,
+        longitude = entity.longitude
+    )
+}
