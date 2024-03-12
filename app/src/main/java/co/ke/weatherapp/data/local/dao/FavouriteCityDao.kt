@@ -5,12 +5,13 @@ import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Upsert
 import co.ke.weatherapp.data.local.entities.FavouriteCityEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FavouriteCityDao {
 
     @Query("SELECT * FROM favourite_city")
-    suspend fun getFavouriteCities(): List<FavouriteCityEntity>
+    fun getFavouriteCities(): Flow<List<FavouriteCityEntity>>
 
     @Upsert
     suspend fun saveFavouriteCity(vararg favouriteCityEntity: FavouriteCityEntity)

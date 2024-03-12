@@ -55,49 +55,46 @@ fun WeatherScreen(
         weatherState.errorMessage != null -> ErrorScreen(modifier = modifier)
         else -> {
 
-            ModalNavigationDrawer(
-                drawerState = drawerState,
-                drawerContent = {
-                    ModalDrawerSheet {
-                        Spacer(
-                            modifier = Modifier.height(16.dp)
-                        )
-                        items.forEachIndexed { index, navigationItem ->
-                            NavigationDrawerItem(
-                                label = {
-                                    Text(text = navigationItem.title)
-                                },
-                                selected = index == selectedItemIndex,
-                                onClick = {
-                                    selectedItemIndex = index
-                                    if (navigationItem.title == "Home"){
-                                        weatherViewModel.getWeatherInfo()
-                                    }else{
-                                        onDrawerItemClicked(navigationItem.route)
-                                    }
+            ModalNavigationDrawer(drawerState = drawerState, drawerContent = {
+                ModalDrawerSheet {
+                    Spacer(
+                        modifier = Modifier.height(16.dp)
+                    )
+                    items.forEachIndexed { index, navigationItem ->
+                        NavigationDrawerItem(label = {
+                            Text(text = navigationItem.title)
+                        },
+                            selected = index == selectedItemIndex,
+                            onClick = {
+                                selectedItemIndex = index
+                                if (navigationItem.title == "Home") {
+                                    weatherViewModel.getWeatherInfo()
+                                } else {
+                                    onDrawerItemClicked(navigationItem.route)
+                                }
 
-                                    scope.launch {
-                                        drawerState.close()
-                                    }
-                                },
-                                icon = {
-                                    Icon(
-                                        imageVector = if (index == selectedItemIndex) {
-                                            navigationItem.selectedIcon
-                                        } else navigationItem.unselectedIcon,
-                                        contentDescription = navigationItem.title
-                                    )
-                                },
-                                badge = {
-                                    navigationItem.badgeCount?.let {
-                                        Text(text = navigationItem.badgeCount.toString())
-                                    }
-                                },
-                                modifier = modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
-                            )
-                        }
+                                scope.launch {
+                                    drawerState.close()
+                                }
+                            },
+                            icon = {
+                                Icon(
+                                    imageVector = if (index == selectedItemIndex) {
+                                        navigationItem.selectedIcon
+                                    } else navigationItem.unselectedIcon,
+                                    contentDescription = navigationItem.title
+                                )
+                            },
+                            badge = {
+                                navigationItem.badgeCount?.let {
+                                    Text(text = navigationItem.badgeCount.toString())
+                                }
+                            },
+                            modifier = modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
+                        )
                     }
-                }) {
+                }
+            }) {
 
 
                 weatherState.weatherInfo?.let { weatherInfo ->
@@ -115,8 +112,7 @@ fun WeatherScreen(
                                 .fillMaxSize()
                         ) {
                             // First Row
-                            CurrentWeatherSection(
-                                modifier = modifier,
+                            CurrentWeatherSection(modifier = modifier,
                                 weatherInfo = weatherInfo,
                                 onLocationSearchClicked = {
                                     if (it.isNotBlank()) {
@@ -141,8 +137,7 @@ fun WeatherScreen(
                                             weatherViewModel.deleteFavouriteCity(favouriteCityEntity)
                                         }
                                     }
-                                }
-                            )
+                                })
                         }
 
                         Row(

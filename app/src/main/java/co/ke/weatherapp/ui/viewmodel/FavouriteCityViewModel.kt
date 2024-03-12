@@ -13,7 +13,9 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -33,12 +35,14 @@ class FavouriteCityViewModel @Inject constructor(
 
     private fun getAllFavouriteCities(){
         viewModelScope.launch(ioDispatcher) {
-            val favouriteCities = favouriteCityRepository.getFavouriteCities()
-
-            favouriteCities.map {
+            favouriteCityRepository.getFavouriteCities()
+                .map {
+                    it.toDomainList()
+                }
+                .collect{result->
                 _favouriteCityState.update {favouriteCityState->
                     favouriteCityState.copy(
-                        favouriteCities =favouriteCities.toDomainList()
+                        favouriteCities = result
                     )
 
                 }

@@ -54,9 +54,7 @@ fun CurrentWeatherSection(
     onDeleteFavouriteCity: (FavouriteCityEntity?) -> Unit
 ) {
     var locationInput by rememberSaveable { mutableStateOf("") }
-    var isFavouriteCity by rememberSaveable {
-        mutableStateOf(weatherInfo.currentWeather?.isFavourite)
-    }
+    var isFavouriteCity = weatherInfo.currentWeather?.isFavourite
 
 
     Column(
@@ -139,13 +137,12 @@ fun CurrentWeatherSection(
                         Icons.Outlined.FavoriteBorder
                     }
 
-                    Icon(
-                        imageVector = favouriteIcon,
+                    Icon(imageVector = favouriteIcon,
                         contentDescription = stringResource(R.string.add_to_favourites),
                         tint = Color.White,
                         modifier = modifier
                             .padding(start = 5.dp)
-                            .clickable(onClick = {
+                            .clickable {
                                 isFavouriteCity = !isFavouriteCity!!
 
                                 if (isFavouriteCity == true) {
@@ -172,7 +169,6 @@ fun CurrentWeatherSection(
                                 }
 
                             })
-                    )
                 }
 
             }
