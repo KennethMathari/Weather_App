@@ -16,6 +16,7 @@
 * Search for weather details by city name
 * Save different weather locations as favourites
 * View list of favourite weather locations
+* Delete favourite city from list
 
 ## Tech-stack
 * [Kotlin](https://kotlinlang.org/) - a cross-platform, statically typed, general-purpose programming language with type inference.
@@ -34,7 +35,7 @@
 * [Truth](https://github.com/google/truth) - Truth makes your test assertions and failure messages more readable.
 
 ## App Screenshot!
-> ![](screenshot.jpeg)
+> ![](screenrecord.webm)
 
 
 

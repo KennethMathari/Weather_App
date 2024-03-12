@@ -36,6 +36,9 @@ fun WeatherNavHost(
                 },
                 onFavouriteCityDelete = {
                     favouriteCityViewModel.deleteFavouriteCity(it)
+                },
+                onNavBackClicked = {
+                    navController.popBackStack()
                 }
             )
         }
