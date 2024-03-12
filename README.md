@@ -14,9 +14,8 @@
 * Display the weather forecast for the next 5 days based on the user's location
 * Change the background image & colour depending on the type of weather(Cloudy, Sunny and Rainy)
 * Search for weather details by city name
-* Save different weather locations as favourites
+* Save/Delete different weather locations as favourites
 * View list of favourite weather locations
-* Delete favourite city from list
 
 ## Tech-stack
 * [Kotlin](https://kotlinlang.org/) - a cross-platform, statically typed, general-purpose programming language with type inference.
