@@ -12,7 +12,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
@@ -20,7 +19,6 @@ import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
 import co.ke.weatherapp.ui.WeatherNavHost
 import co.ke.weatherapp.ui.theme.WeatherAppTheme
-import co.ke.weatherapp.ui.viewmodel.FavouriteCityViewModel
 import co.ke.weatherapp.ui.viewmodel.WeatherViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,7 +26,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val weatherViewModel: WeatherViewModel by viewModels()
-    private val favouriteCityViewModel: FavouriteCityViewModel by viewModels()
     private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
 
 
@@ -37,7 +34,7 @@ class MainActivity : ComponentActivity() {
             statusBarStyle = SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT)
         )
         super.onCreate(savedInstanceState)
-        WindowCompat.setDecorFitsSystemWindows(window, false);
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         permissionLauncher = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
         ) { permissions ->
@@ -65,8 +62,8 @@ class MainActivity : ComponentActivity() {
                 ) {
                     WeatherNavHost(
                         navController,
-                        weatherViewModel,
-                        favouriteCityViewModel)
+                        weatherViewModel
+                    )
                 }
             }
         }

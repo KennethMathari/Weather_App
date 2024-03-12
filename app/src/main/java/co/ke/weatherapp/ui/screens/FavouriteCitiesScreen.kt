@@ -30,6 +30,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import co.ke.weatherapp.R
 import co.ke.weatherapp.data.local.entities.FavouriteCityEntity
@@ -39,11 +40,9 @@ import co.ke.weatherapp.ui.viewmodel.FavouriteCityViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FavouriteCitiesScreen(
-    favouriteCityViewModel: FavouriteCityViewModel,
-    onFavouriteCityClicked: (String) -> Unit,
-    onFavouriteCityDelete: (FavouriteCityEntity) -> Unit,
-    onNavBackClicked: () -> Unit
+    onFavouriteCityClicked: (String) -> Unit, onNavBackClicked: () -> Unit
 ) {
+    val favouriteCityViewModel = hiltViewModel<FavouriteCityViewModel>()
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
@@ -80,7 +79,8 @@ fun FavouriteCitiesScreen(
                 .navigationBarsPadding()
         ) {
             items(items = favouriteCityState.favouriteCities) { favouriteCityDomain ->
-                Card(elevation = CardDefaults.cardElevation(5.dp),
+                Card(
+                    elevation = CardDefaults.cardElevation(5.dp),
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(10.dp)
@@ -97,7 +97,8 @@ fun FavouriteCitiesScreen(
 
                         )
 
-                        Icon(imageVector = Icons.Filled.Delete,
+                        Icon(
+                            imageVector = Icons.Filled.Delete,
                             contentDescription = stringResource(R.string.delete_favourite_city),
                             modifier = Modifier
                                 .padding(10.dp)
@@ -108,7 +109,7 @@ fun FavouriteCitiesScreen(
                                         latitude = favouriteCityDomain.latitude,
                                         longitude = favouriteCityDomain.longitude
                                     )
-                                    onFavouriteCityDelete(favouriteCityEntity)
+                                    favouriteCityViewModel.deleteFavouriteCity(favouriteCityEntity)
                                 })
                         )
                         Icon(

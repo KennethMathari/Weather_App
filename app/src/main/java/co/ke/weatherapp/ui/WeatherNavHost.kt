@@ -7,14 +7,12 @@ import androidx.navigation.compose.composable
 import co.ke.weatherapp.ui.screens.FavouriteCitiesScreen
 import co.ke.weatherapp.ui.screens.WeatherScreen
 import co.ke.weatherapp.ui.utils.WeatherRoutes
-import co.ke.weatherapp.ui.viewmodel.FavouriteCityViewModel
 import co.ke.weatherapp.ui.viewmodel.WeatherViewModel
 
 @Composable
 fun WeatherNavHost(
     navController: NavHostController,
-    weatherViewModel: WeatherViewModel,
-    favouriteCityViewModel: FavouriteCityViewModel
+    weatherViewModel: WeatherViewModel
 ) {
 
     NavHost(navController = navController, startDestination = WeatherRoutes.Weather.name) {
@@ -29,13 +27,9 @@ fun WeatherNavHost(
 
         composable(route = WeatherRoutes.FavouriteCities.name) {
             FavouriteCitiesScreen(
-                favouriteCityViewModel = favouriteCityViewModel,
                 onFavouriteCityClicked = {
                     weatherViewModel.getWeatherByCityName(it)
                     navController.navigate(WeatherRoutes.Weather.name)
-                },
-                onFavouriteCityDelete = {
-                    favouriteCityViewModel.deleteFavouriteCity(it)
                 },
                 onNavBackClicked = {
                     navController.popBackStack()
