@@ -20,8 +20,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import co.ke.weatherapp.R
 import co.ke.weatherapp.data.local.entities.FavouriteCityEntity
 import co.ke.weatherapp.ui.viewmodel.FavouriteCityViewModel
 
@@ -67,7 +69,7 @@ fun FavouriteCitiesScreen(
 
                     Icon(
                         imageVector = Icons.Filled.Delete,
-                        contentDescription = "Delete Favourite City",
+                        contentDescription = stringResource(R.string.delete_favourite_city),
                         modifier = Modifier
                             .padding(10.dp)
                             .clickable(
@@ -84,7 +86,7 @@ fun FavouriteCitiesScreen(
                     )
                     Icon(
                         imageVector = Icons.Filled.Info,
-                        contentDescription = "More info",
+                        contentDescription = stringResource(R.string.more_info),
                         modifier = Modifier
                             .padding(10.dp)
                     )

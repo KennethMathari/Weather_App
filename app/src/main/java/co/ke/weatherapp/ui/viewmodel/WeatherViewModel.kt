@@ -24,6 +24,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -215,21 +216,15 @@ class WeatherViewModel @Inject constructor(
         }
     }
 
-    private fun isFavouriteCity(currentWeatherDomain: CurrentWeatherDomain): Boolean {
-        var isFavourite = true
-        viewModelScope.launch(ioDispatcher) {
-            favouriteCityRepository.getFavouriteCities().collect {
-                isFavourite = it.contains(
-                    FavouriteCityEntity(
-                        id = currentWeatherDomain.id,
-                        cityName = currentWeatherDomain.name,
-                        latitude = currentWeatherDomain.coord.lat.toString(),
-                        longitude = currentWeatherDomain.coord.lon.toString()
-                    )
-                )
+    private suspend fun isFavouriteCity(currentWeatherDomain: CurrentWeatherDomain): Boolean {
+        return favouriteCityRepository.getFavouriteCities().map { favouriteCities ->
+            favouriteCities.any {
+                it.id == currentWeatherDomain.id && it.cityName == currentWeatherDomain.name &&
+                        it.latitude == currentWeatherDomain.coord.lat.toString() &&
+                        it.longitude == currentWeatherDomain.coord.lon.toString()
             }
-        }
-        return isFavourite
+        }.firstOrNull() ?: false
     }
+
 
 }

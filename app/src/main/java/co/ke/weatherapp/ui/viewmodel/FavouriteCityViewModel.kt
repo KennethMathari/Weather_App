@@ -52,11 +52,6 @@ class FavouriteCityViewModel @Inject constructor(
 
     fun deleteFavouriteCity(favouriteCityEntity: FavouriteCityEntity){
         viewModelScope.launch(ioDispatcher) {
-            _favouriteCityState.value = _favouriteCityState.value.copy(
-                favouriteCities = _favouriteCityState.value.favouriteCities.filterNot {
-                    it == mapFavouriteCityEntityToDomain(favouriteCityEntity)
-                }
-            )
             favouriteCityRepository.deleteCity(favouriteCityEntity)
         }
     }

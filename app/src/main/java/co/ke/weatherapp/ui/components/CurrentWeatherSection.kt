@@ -138,7 +138,7 @@ fun CurrentWeatherSection(
                     }
 
                     Icon(imageVector = favouriteIcon,
-                        contentDescription = stringResource(R.string.add_to_favourites),
+                        contentDescription = stringResource(R.string.favourites_city),
                         tint = Color.White,
                         modifier = modifier
                             .padding(start = 5.dp)
@@ -183,7 +183,7 @@ fun CurrentWeatherSection(
                 ),
                 placeholder = {
                     Text(
-                        text = "Search Location...", style = TextStyle(
+                        text = stringResource(R.string.search_city), style = TextStyle(
                             color = Color.White
                         )
                     )
