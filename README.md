@@ -35,10 +35,6 @@
 
 ## App Screenshot!
 > ![](video.mp4)
-
-
-
-
-![](https://github.com/KennethMathari/Weather_App/assets/27956755/e93a4ded-868b-427d-a38c-ac15feceeccb)
+> ![](https://github.com/KennethMathari/Weather_App/assets/27956755/e93a4ded-868b-427d-a38c-ac15feceeccb)
 
 
