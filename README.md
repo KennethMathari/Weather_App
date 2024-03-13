@@ -33,8 +33,5 @@
 * [MockK](https://github.com/mockk) - mocking library for Kotlin
 * [Truth](https://github.com/google/truth) - Truth makes your test assertions and failure messages more readable.
 
-## App Screenshot!
-> [ ](video.mp4)
-
-
-![](https://github.com/KennethMathari/Weather_App/assets/27956755/45837793-656c-4ca7-8869-1c560176e6a1)
+## App Demo!
+> ![](https://github.com/KennethMathari/Weather_App/assets/27956755/3c136842-0e6b-47f3-ade2-cf20a4d358d6)
