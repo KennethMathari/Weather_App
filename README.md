@@ -34,4 +34,4 @@
 * [Truth](https://github.com/google/truth) - Truth makes your test assertions and failure messages more readable.
 
 ## App Demo!
-> ![](https://github.com/KennethMathari/Weather_App/assets/27956755/3c136842-0e6b-47f3-ade2-cf20a4d358d6)
+> ![](https://github.com/KennethMathari/Weather_App/assets/27956755/40896aa1-f14a-444c-a281-0600233ad5ce)
