@@ -41,7 +41,7 @@ class WeatherViewModel @Inject constructor(
     private val _weatherState = MutableStateFlow(WeatherState())
     val weatherState: StateFlow<WeatherState> get() = _weatherState.asStateFlow()
 
-    private val apiKey = BuildConfig.API_KEY
+    private val openWeatherApiKey = BuildConfig.OPEN_WEATHER_API_KEY
 
     fun getWeatherInfo() {
         viewModelScope.launch(ioDispatcher) {
@@ -51,7 +51,7 @@ class WeatherViewModel @Inject constructor(
                 val longitude = location.longitude.toString()
 
                 val currentWeatherFlow = weatherRepository.getCurrentWeather(
-                    latitude = latitude, longitude = longitude, apiKey = apiKey
+                    latitude = latitude, longitude = longitude, apiKey = openWeatherApiKey
                 ).map {
                     mapToCurrentWeatherDomain(it)
                 }.catch { e ->
@@ -59,7 +59,7 @@ class WeatherViewModel @Inject constructor(
                 }
 
                 val weatherForecastFlow = weatherRepository.getWeatherForecast(
-                    latitude = latitude, longitude = longitude, apiKey = apiKey
+                    latitude = latitude, longitude = longitude, apiKey = openWeatherApiKey
                 ).map {
                     mapToWeatherForecastDomain(it)
                 }.catch { e ->
@@ -131,7 +131,7 @@ class WeatherViewModel @Inject constructor(
 
     fun getWeatherByCityName(cityName: String) {
         viewModelScope.launch(ioDispatcher) {
-            weatherRepository.getWeatherByCityName(cityName, apiKey).collect { result ->
+            weatherRepository.getWeatherByCityName(cityName, openWeatherApiKey).collect { result ->
                 when (result) {
                     is NetworkResult.Success -> {
                         _weatherState.update { currentWeatherState ->
