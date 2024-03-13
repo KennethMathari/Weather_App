@@ -34,7 +34,7 @@
 * [Truth](https://github.com/google/truth) - Truth makes your test assertions and failure messages more readable.
 
 ## App Screenshot!
-> ![](screenrecord.webm)
+> ![](video.mp4)
 
 
 
