@@ -34,7 +34,6 @@
 * [Truth](https://github.com/google/truth) - Truth makes your test assertions and failure messages more readable.
 
 ## App Screenshot!
-> ![](video.mp4)
-> ![](https://github.com/KennethMathari/Weather_App/assets/27956755/e93a4ded-868b-427d-a38c-ac15feceeccb)
+> ![](https://github-production-user-asset-6210df.s3.amazonaws.com/27956755/312341129-e93a4ded-868b-427d-a38c-ac15feceeccb.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20240313%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240313T065938Z&X-Amz-Expires=300&X-Amz-Signature=7ecfd6a670686418cf617f2c81e9027d5ec6791a368421b1dc76c1a6e27749fb&X-Amz-SignedHeaders=host&actor_id=27956755&key_id=0&repo_id=761777134)
 
 
