@@ -37,3 +37,4 @@
 > [ ](video.mp4)
 
 
+![](https://github.com/KennethMathari/Weather_App/assets/27956755/45837793-656c-4ca7-8869-1c560176e6a1)
