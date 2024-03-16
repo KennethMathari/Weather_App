@@ -112,11 +112,14 @@ fun FavouriteCitiesScreen(
                                     favouriteCityViewModel.deleteFavouriteCity(favouriteCityEntity)
                                 })
                         )
-                        Icon(
-                            imageVector = Icons.Filled.Info,
+                        Icon(imageVector = Icons.Filled.Info,
                             contentDescription = stringResource(R.string.more_info),
-                            modifier = Modifier.padding(10.dp)
-                        )
+                            modifier = Modifier
+                                .padding(10.dp)
+                                .clickable(onClick = {
+                                    favouriteCityViewModel.getCityDetails(favouriteCityDomain.cityName)
+                                    //favouriteCityViewModel.getCityId(favouriteCityDomain.cityName)
+                                }))
                     }
 
 

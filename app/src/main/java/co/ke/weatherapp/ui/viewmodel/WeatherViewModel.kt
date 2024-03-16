@@ -2,7 +2,6 @@ package co.ke.weatherapp.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import co.ke.weatherapp.BuildConfig
 import co.ke.weatherapp.data.local.entities.FavouriteCityEntity
 import co.ke.weatherapp.data.location.LocationTracker
 import co.ke.weatherapp.data.network.utils.NetworkResult
@@ -16,6 +15,7 @@ import co.ke.weatherapp.domain.model.CurrentWeatherDomain
 import co.ke.weatherapp.domain.utils.filterFor1000h
 import co.ke.weatherapp.ui.state.WeatherInfo
 import co.ke.weatherapp.ui.state.WeatherState
+import com.google.android.libraries.places.api.net.PlacesClient
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,22 +29,31 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Named
 
 @HiltViewModel
 class WeatherViewModel @Inject constructor(
     private val weatherRepository: WeatherRepository,
     private val locationTracker: LocationTracker,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
-    private val favouriteCityRepository: FavouriteCityRepository
+    private val favouriteCityRepository: FavouriteCityRepository,
+    @Named("OpenWeatherApiKey") private val openWeatherApiKey: String,
+    @Named("GoogleMapsApiKey") private val googleMapsApiKey: String
 ) : ViewModel() {
 
     private val _weatherState = MutableStateFlow(WeatherState())
     val weatherState: StateFlow<WeatherState> get() = _weatherState.asStateFlow()
 
-    private val openWeatherApiKey = BuildConfig.OPEN_WEATHER_API_KEY
+    init {
+        logApiKeyError(
+            openWeatherApiKey, googleMapsApiKey
+        )
+    }
 
     fun getWeatherInfo() {
         viewModelScope.launch(ioDispatcher) {
+
+
 
             locationTracker.getCurrentLocation()?.let { location ->
                 val latitude = location.latitude.toString()
@@ -224,6 +233,20 @@ class WeatherViewModel @Inject constructor(
                         it.longitude == currentWeatherDomain.coord.lon.toString()
             }
         }.firstOrNull() ?: false
+    }
+
+    private fun logApiKeyError(openWeatherApiKey: String, googleMapsApiKey: String) {
+        if ((openWeatherApiKey.isEmpty() && googleMapsApiKey.isEmpty()) ||
+            (openWeatherApiKey == "DEFAULT_API_KEY" && googleMapsApiKey == "DEFAULT_API_KEY")
+        ) {
+            viewModelScope.launch {
+                _weatherState.emit(
+                    WeatherState(
+                        errorMessage = "API Keys are not set!"
+                    )
+                )
+            }
+        }
     }
 
 
