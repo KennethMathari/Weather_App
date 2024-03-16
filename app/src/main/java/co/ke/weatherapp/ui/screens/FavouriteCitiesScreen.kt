@@ -117,8 +117,8 @@ fun FavouriteCitiesScreen(
                             modifier = Modifier
                                 .padding(10.dp)
                                 .clickable(onClick = {
-                                    favouriteCityViewModel.getCityDetails(favouriteCityDomain.cityName)
-                                    //favouriteCityViewModel.getCityId(favouriteCityDomain.cityName)
+                                    //favouriteCityViewModel.getCityDetails(favouriteCityDomain.cityName)
+                                    favouriteCityViewModel.getCityId(favouriteCityDomain.cityName)
                                 }))
                     }
 

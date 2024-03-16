@@ -8,7 +8,9 @@ import co.ke.weatherapp.data.repository.FavouriteCityRepository
 import co.ke.weatherapp.di.IoDispatcher
 import co.ke.weatherapp.domain.mappers.toDomainList
 import co.ke.weatherapp.ui.state.FavouriteCityState
+import com.google.android.libraries.places.api.model.AutocompleteSessionToken
 import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.model.PlaceTypes
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
 import com.google.android.libraries.places.api.net.PlacesClient
@@ -26,7 +28,8 @@ import javax.inject.Inject
 class FavouriteCityViewModel @Inject constructor(
     private val favouriteCityRepository: FavouriteCityRepository,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
-    private val placesClient: PlacesClient
+    private val placesClient: PlacesClient,
+    private val autocompleteSessionToken: AutocompleteSessionToken
 ):ViewModel() {
 
     private val _favouriteCityState = MutableStateFlow(FavouriteCityState())
@@ -60,26 +63,28 @@ class FavouriteCityViewModel @Inject constructor(
         }
     }
 
-    fun getCityDetails(cityName : String){
+    private fun getCityDetails(cityId : String){
         val placeFields = listOf(Place.Field.ID, Place.Field.DINE_IN, Place.Field.RATING)
         val request = FetchPlaceRequest.builder(
-            cityName,
+            cityId,
             placeFields
         ).build()
 
         placesClient.fetchPlace(request)
             .addOnSuccessListener { response->
                 val place = response.place
-                Log.e("Place:", "$place")
+                Log.e("PlaceDetails:", "$place")
             }
             .addOnFailureListener { exception->
-                Log.e("PlaceError:","$exception")
+                Log.e("PlaceDetailsError:","$exception")
             }
 
     }
 
     fun getCityId(cityName: String){
         val request = FindAutocompletePredictionsRequest.builder()
+            .setTypesFilter(listOf(PlaceTypes.CITIES))
+            .setSessionToken(autocompleteSessionToken)
             .setQuery(cityName)
             .build()
 
@@ -87,6 +92,7 @@ class FavouriteCityViewModel @Inject constructor(
             .addOnSuccessListener { response->
                 if (response != null && response.autocompletePredictions.isNotEmpty()) {
                     val placeId = response.autocompletePredictions[0].placeId
+                    getCityDetails(placeId)
                     Log.e("Place:", placeId)
                 }
             }

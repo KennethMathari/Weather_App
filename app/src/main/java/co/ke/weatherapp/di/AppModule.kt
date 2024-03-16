@@ -12,6 +12,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.Places.initializeWithNewPlacesApiEnabled
+import com.google.android.libraries.places.api.model.AutocompleteSessionToken
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -94,6 +95,11 @@ object AppModule {
     ): PlacesClient {
         initializeWithNewPlacesApiEnabled(context, googleMapsApiKey)
         return Places.createClient(context)
+    }
+
+    @Provides
+    fun provideAutoCompleteSessionToken(): AutocompleteSessionToken {
+        return AutocompleteSessionToken.newInstance()
     }
 
 }
