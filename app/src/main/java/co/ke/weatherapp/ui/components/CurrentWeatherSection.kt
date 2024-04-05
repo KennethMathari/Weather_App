@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
@@ -26,13 +28,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import co.ke.weatherapp.R
@@ -43,6 +49,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.util.Locale
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun CurrentWeatherSection(
     modifier: Modifier = Modifier,
@@ -55,6 +62,7 @@ fun CurrentWeatherSection(
 ) {
     var locationInput by rememberSaveable { mutableStateOf("") }
     var isFavouriteCity = weatherInfo.currentWeather?.isFavourite
+    val keyboardController = LocalSoftwareKeyboardController.current
 
 
     Column(
@@ -188,6 +196,17 @@ fun CurrentWeatherSection(
                         )
                     )
                 },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Search
+                ),
+                keyboardActions = KeyboardActions(
+                    onSearch = {
+                        onLocationSearchClicked(locationInput)
+                        keyboardController?.hide()
+                        locationInput = ""
+                    }
+                ),
                 shape = RoundedCornerShape(percent = 50),
                 maxLines = 1,
                 modifier = Modifier
@@ -200,6 +219,8 @@ fun CurrentWeatherSection(
                         tint = Color.White,
                         modifier = Modifier.clickable(onClick = {
                             onLocationSearchClicked(locationInput)
+                            keyboardController?.hide()
+                            locationInput = ""
                         })
                     )
                 })

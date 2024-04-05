@@ -53,8 +53,6 @@ class WeatherViewModel @Inject constructor(
     fun getWeatherInfo() {
         viewModelScope.launch(ioDispatcher) {
 
-
-
             locationTracker.getCurrentLocation()?.let { location ->
                 val latitude = location.latitude.toString()
                 val longitude = location.longitude.toString()
@@ -187,9 +185,7 @@ class WeatherViewModel @Inject constructor(
                         }
                     }
                 }
-
             }
-
         }
     }
 
