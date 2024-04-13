@@ -2,19 +2,20 @@ package co.ke.weatherapp.data.repository
 
 import android.os.Build
 import androidx.annotation.RequiresExtension
-import co.ke.weatherapp.data.network.dto.CurrentWeather
-import co.ke.weatherapp.data.network.dto.WeatherForecast
 import co.ke.weatherapp.data.network.services.WeatherApi
-import co.ke.weatherapp.data.network.utils.NetworkResult
-import co.ke.weatherapp.data.network.utils.safeApiCall
 import co.ke.weatherapp.di.IoDispatcher
+import co.ke.weatherapp.domain.CityNameError
+import co.ke.weatherapp.domain.NetworkResult
+import co.ke.weatherapp.domain.WeatherInfoError
 import co.ke.weatherapp.domain.WeatherType
-import co.ke.weatherapp.domain.mappers.mapToCurrentWeatherDomain
 import co.ke.weatherapp.domain.mappers.mapToWeatherForecastDomain
+import co.ke.weatherapp.domain.mappers.toDomain
+import co.ke.weatherapp.domain.model.CurrentWeatherDomain
+import co.ke.weatherapp.domain.model.WeatherForecastDomain
 import co.ke.weatherapp.ui.state.WeatherInfo
-import co.ke.weatherapp.domain.utils.filterFor1000h
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onStart
@@ -27,78 +28,57 @@ class WeatherRepositoryImpl @Inject constructor(
 
     override suspend fun getCurrentWeather(
         latitude: String, longitude: String, apiKey: String
-    ): Flow<NetworkResult<CurrentWeather>> {
-        return flow {
-            val result = safeApiCall {
-                weatherApi.getCurrentWeather(
-                    latitude, longitude, apiKey
-                )
-            }
-            emit(result)
+    ): Flow<NetworkResult<CurrentWeatherDomain, WeatherInfoError>> {
+        return flow<NetworkResult<CurrentWeatherDomain, WeatherInfoError>> {
+            val result = weatherApi.getCurrentWeather(
+                latitude, longitude, apiKey
+            ).toDomain()
+            emit(NetworkResult.Success(result))
         }.flowOn(ioDispatcher).onStart {
             emit(NetworkResult.Loading)
+        }.catch {
+            emit(NetworkResult.Error(WeatherInfoError.NO_WEATHER_INFO))
         }
-
     }
 
     override suspend fun getWeatherForecast(
         latitude: String, longitude: String, apiKey: String
-    ): Flow<NetworkResult<WeatherForecast>> {
-        return flow {
-            val result = safeApiCall {
-                weatherApi.getWeatherForecast(
-                    latitude, longitude, apiKey
-                )
-
-            }
-            emit(result)
+    ): Flow<NetworkResult<WeatherForecastDomain, WeatherInfoError>> {
+        return flow<NetworkResult<WeatherForecastDomain, WeatherInfoError>> {
+            val result = weatherApi.getWeatherForecast(
+                latitude, longitude, apiKey
+            )
+            emit(NetworkResult.Success(mapToWeatherForecastDomain(result)))
         }.flowOn(ioDispatcher).onStart {
             emit(NetworkResult.Loading)
+        }.catch {
+            emit(NetworkResult.Error(WeatherInfoError.NO_WEATHER_INFO))
         }
     }
 
 
     override suspend fun getWeatherByCityName(
         cityName: String, apiKey: String
-    ): Flow<NetworkResult<WeatherInfo>> {
-        return flow {
+    ): Flow<NetworkResult<WeatherInfo, CityNameError>> {
+        return flow<NetworkResult<WeatherInfo, CityNameError>> {
 
-            val currentWeatherResult = safeApiCall {
-                weatherApi.getWeatherByCityName(cityName, apiKey)
-            }
+            val currentWeatherDomain = weatherApi.getWeatherByCityName(cityName, apiKey).toDomain()
+            val weatherForecastResult = weatherApi.getWeatherForecastByCityName(cityName, apiKey)
 
-            if (currentWeatherResult is NetworkResult.Success) {
-                val currentWeather = currentWeatherResult.data
-                val latitude = currentWeather.coord.lat.toString()
-                val longitude = currentWeather.coord.lon.toString()
+            val weatherForecastDomain = mapToWeatherForecastDomain(weatherForecastResult)
 
-                val weatherForecastResult = safeApiCall {
-                    weatherApi.getWeatherForecast(latitude, longitude, apiKey)
-                }
+            val weatherInfo = WeatherInfo(
+                currentWeather = currentWeatherDomain,
+                weatherForecast = weatherForecastDomain,
+                weatherType = WeatherType.getWeatherType(currentWeatherDomain.weather[0].id)
+            )
 
-                if (weatherForecastResult is NetworkResult.Success) {
-                    val weatherForecast = weatherForecastResult.data
-
-                    emit(
-                        NetworkResult.Success(
-                            WeatherInfo(
-                                currentWeather = mapToCurrentWeatherDomain(currentWeather),
-                                weatherForecast = mapToWeatherForecastDomain(weatherForecast).filterFor1000h(),
-                                weatherType = WeatherType.getWeatherType(
-                                    currentWeather.weather[0].id ?: 0
-                                )
-                            )
-                        )
-                    )
-                } else {
-                    emit(NetworkResult.Error(Exception("Failed to fetch weather forecast")))
-                }
-            } else {
-                emit(NetworkResult.Error(Exception("Failed to fetch current weather")))
-            }
+            emit(NetworkResult.Success(weatherInfo))
         }.flowOn(ioDispatcher).onStart {
-                NetworkResult.Loading
-            }
+            emit(NetworkResult.Loading)
+        }.catch {
+            emit(NetworkResult.Error(CityNameError.NO_CITY_NAME))
+        }
     }
 
 }

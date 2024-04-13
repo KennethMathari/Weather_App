@@ -4,25 +4,27 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.ke.weatherapp.data.local.entities.FavouriteCityEntity
 import co.ke.weatherapp.data.location.LocationTracker
-import co.ke.weatherapp.data.network.utils.NetworkResult
 import co.ke.weatherapp.data.repository.FavouriteCityRepository
 import co.ke.weatherapp.data.repository.WeatherRepository
 import co.ke.weatherapp.di.IoDispatcher
+import co.ke.weatherapp.domain.CityNameError
+import co.ke.weatherapp.domain.NetworkResult
+import co.ke.weatherapp.domain.WeatherInfoError.NO_WEATHER_INFO
 import co.ke.weatherapp.domain.WeatherType.Companion.getWeatherType
+import co.ke.weatherapp.domain.mappers.mapToCoordDomain
 import co.ke.weatherapp.domain.mappers.mapToCurrentWeatherDomain
-import co.ke.weatherapp.domain.mappers.mapToWeatherForecastDomain
+import co.ke.weatherapp.domain.mappers.mapToMainDomain
+import co.ke.weatherapp.domain.mappers.toDomain
 import co.ke.weatherapp.domain.model.CurrentWeatherDomain
 import co.ke.weatherapp.domain.utils.filterFor1000h
 import co.ke.weatherapp.ui.state.WeatherInfo
 import co.ke.weatherapp.ui.state.WeatherState
-import com.google.android.libraries.places.api.net.PlacesClient
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.buffer
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
@@ -59,19 +61,11 @@ class WeatherViewModel @Inject constructor(
 
                 val currentWeatherFlow = weatherRepository.getCurrentWeather(
                     latitude = latitude, longitude = longitude, apiKey = openWeatherApiKey
-                ).map {
-                    mapToCurrentWeatherDomain(it)
-                }.catch { e ->
-                    println(e)
-                }
+                )
 
                 val weatherForecastFlow = weatherRepository.getWeatherForecast(
                     latitude = latitude, longitude = longitude, apiKey = openWeatherApiKey
-                ).map {
-                    mapToWeatherForecastDomain(it)
-                }.catch { e ->
-                    println(e)
-                }
+                )
 
                 combine(
                     currentWeatherFlow, weatherForecastFlow
@@ -93,7 +87,6 @@ class WeatherViewModel @Inject constructor(
                                             name = currentWeather.data.name,
                                             coord = currentWeather.data.coord,
                                             isFavourite = isFavouriteCity(currentWeather.data),
-                                            //isFavourite = false,
                                             weather = currentWeather.data.weather
                                         ),
                                         weatherForecast = weatherForecast.data.filterFor1000h(),
@@ -104,13 +97,16 @@ class WeatherViewModel @Inject constructor(
                         }
 
                         currentWeather is NetworkResult.Error && weatherForecast is NetworkResult.Error -> {
-                            _weatherState.update { currentWeatherState ->
-                                currentWeatherState.copy(
-                                    weatherInfo = null,
-                                    isLoading = false,
-                                    errorMessage = currentWeather.errorDetails.message
-                                        ?: weatherForecast.errorDetails.message
-                                )
+                            when(currentWeather.error){
+                                NO_WEATHER_INFO -> {
+                                    _weatherState.update { currentWeatherState ->
+                                        currentWeatherState.copy(
+                                            weatherInfo = null,
+                                            isLoading = false,
+                                            errorMessage = "Unable to Weather Info!"
+                                        )
+                                    }
+                                }
                             }
                         }
 
@@ -154,7 +150,6 @@ class WeatherViewModel @Inject constructor(
                                         coord = currentWeather.coord,
                                         weather = currentWeather.weather,
                                         isFavourite = isFavouriteCity(currentWeather)
-                                        //isFavourite = false
                                     ),
                                     weatherType = weatherType
                                 )
@@ -168,12 +163,16 @@ class WeatherViewModel @Inject constructor(
                     }
 
                     is NetworkResult.Error -> {
-                        _weatherState.update { currentWeatherState ->
-                            currentWeatherState.copy(
-                                weatherInfo = null,
-                                isLoading = false,
-                                errorMessage = result.errorDetails.message
-                            )
+                        when(result.error){
+                            CityNameError.NO_CITY_NAME -> {
+                                _weatherState.update { currentWeatherState ->
+                                    currentWeatherState.copy(
+                                        weatherInfo = null,
+                                        isLoading = false,
+                                        errorMessage = "City Not Found!"
+                                    )
+                                }
+                            }
                         }
                     }
 

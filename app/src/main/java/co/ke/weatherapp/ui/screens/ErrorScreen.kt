@@ -11,12 +11,14 @@ import androidx.compose.ui.res.stringResource
 import co.ke.weatherapp.R
 
 @Composable
-fun ErrorScreen(modifier : Modifier){
+fun ErrorScreen(
+    modifier : Modifier,
+    errorMessage: String){
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = stringResource(R.string.an_error_occurred))
+        Text(text = errorMessage)
     }
 }

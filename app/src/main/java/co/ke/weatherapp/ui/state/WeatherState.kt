@@ -1,5 +1,6 @@
 package co.ke.weatherapp.ui.state
 
+import androidx.compose.runtime.Stable
 import co.ke.weatherapp.domain.WeatherType
 import co.ke.weatherapp.domain.model.CurrentWeatherDomain
 import co.ke.weatherapp.domain.model.WeatherForecastDomain

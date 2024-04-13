@@ -28,6 +28,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import co.ke.weatherapp.ui.components.CurrentWeatherMinMaxTempSection
 import co.ke.weatherapp.ui.components.CurrentWeatherSection
@@ -52,7 +53,10 @@ fun WeatherScreen(
 
     when {
         weatherState.isLoading -> LoadingScreen(modifier = modifier)
-        weatherState.errorMessage != null -> ErrorScreen(modifier = modifier)
+        weatherState.errorMessage != null -> ErrorScreen(
+            modifier = modifier, errorMessage = weatherState.errorMessage ?: ""
+        )
+
         else -> {
 
             ModalNavigationDrawer(drawerState = drawerState, drawerContent = {
@@ -63,34 +67,29 @@ fun WeatherScreen(
                     items.forEachIndexed { index, navigationItem ->
                         NavigationDrawerItem(label = {
                             Text(text = navigationItem.title)
-                        },
-                            selected = index == selectedItemIndex,
-                            onClick = {
-                                selectedItemIndex = index
-                                if (navigationItem.title == "Home") {
-                                    weatherViewModel.getWeatherInfo()
-                                } else {
-                                    onDrawerItemClicked(navigationItem.route)
-                                }
+                        }, selected = index == selectedItemIndex, onClick = {
+                            selectedItemIndex = index
+                            if (navigationItem.title == "Home") {
+                                weatherViewModel.getWeatherInfo()
+                            } else {
+                                onDrawerItemClicked(navigationItem.route)
+                            }
 
-                                scope.launch {
-                                    drawerState.close()
-                                }
-                            },
-                            icon = {
-                                Icon(
-                                    imageVector = if (index == selectedItemIndex) {
-                                        navigationItem.selectedIcon
-                                    } else navigationItem.unselectedIcon,
-                                    contentDescription = navigationItem.title
-                                )
-                            },
-                            badge = {
-                                navigationItem.badgeCount?.let {
-                                    Text(text = navigationItem.badgeCount.toString())
-                                }
-                            },
-                            modifier = modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
+                            scope.launch {
+                                drawerState.close()
+                            }
+                        }, icon = {
+                            Icon(
+                                imageVector = if (index == selectedItemIndex) {
+                                    navigationItem.selectedIcon
+                                } else navigationItem.unselectedIcon,
+                                contentDescription = navigationItem.title
+                            )
+                        }, badge = {
+                            navigationItem.badgeCount?.let {
+                                Text(text = navigationItem.badgeCount.toString())
+                            }
+                        }, modifier = modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
                         )
                     }
                 }
