@@ -40,9 +40,10 @@ import co.ke.weatherapp.ui.viewmodel.FavouriteCityViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FavouriteCitiesScreen(
-    onFavouriteCityClicked: (String) -> Unit, onNavBackClicked: () -> Unit
+    onFavouriteCityClicked: (String) -> Unit,
+    onNavBackClicked: () -> Unit,
+    favouriteCityViewModel: FavouriteCityViewModel = hiltViewModel()
 ) {
-    val favouriteCityViewModel = hiltViewModel<FavouriteCityViewModel>()
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
