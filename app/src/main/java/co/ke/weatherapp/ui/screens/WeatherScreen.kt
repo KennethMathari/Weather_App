@@ -42,6 +42,7 @@ fun WeatherScreen(
     modifier: Modifier = Modifier,
     weatherViewModel: WeatherViewModel,
     onDrawerItemClicked: (String) -> Unit,
+    onReturnToHomePageClicked: ()->Unit
 ) {
     val weatherState by weatherViewModel.weatherState.collectAsStateWithLifecycle()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -52,7 +53,12 @@ fun WeatherScreen(
 
     when {
         weatherState.isLoading -> LoadingScreen(modifier = modifier)
-        weatherState.errorMessage != null -> ErrorScreen(modifier = modifier)
+        weatherState.errorMessage != null -> ErrorScreen(
+            modifier = modifier,
+            onReturnToHomePageClicked = {
+                weatherViewModel.getWeatherInfo()
+                onReturnToHomePageClicked()
+            } )
         else -> {
 
             ModalNavigationDrawer(drawerState = drawerState, drawerContent = {

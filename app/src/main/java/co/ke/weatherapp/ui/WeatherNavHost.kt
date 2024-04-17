@@ -22,7 +22,8 @@ fun WeatherNavHost(
                 weatherViewModel = weatherViewModel,
                 onDrawerItemClicked = {
                     navController.navigate(it)
-                })
+                },
+                onReturnToHomePageClicked = { navController.navigate(WeatherRoutes.Weather.name) })
         }
 
         composable(route = WeatherRoutes.FavouriteCities.name) {
