@@ -27,7 +27,7 @@ android {
     buildTypes {
         getByName("release") {
             isShrinkResources = true
-            isMinifyEnabled = true
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android.txt"),
                 "proguard-rules.pro"
