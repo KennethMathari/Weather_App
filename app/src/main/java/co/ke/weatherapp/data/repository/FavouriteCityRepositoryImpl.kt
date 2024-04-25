@@ -5,8 +5,8 @@ import co.ke.weatherapp.data.local.entities.FavouriteCityEntity
 import co.ke.weatherapp.di.IoDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class FavouriteCityRepositoryImpl @Inject constructor(
@@ -14,14 +14,18 @@ class FavouriteCityRepositoryImpl @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : FavouriteCityRepository {
     override suspend fun saveFavouriteCity(favouriteCityEntity: FavouriteCityEntity) {
-        favouriteCityDao.saveFavouriteCity(favouriteCityEntity)
+        withContext(ioDispatcher) {
+            favouriteCityDao.saveFavouriteCity(favouriteCityEntity)
+        }
     }
 
-    override suspend fun getFavouriteCities(): Flow<List<FavouriteCityEntity>> {
+    override fun getFavouriteCities(): Flow<List<FavouriteCityEntity>> {
         return favouriteCityDao.getFavouriteCities().flowOn(ioDispatcher)
     }
 
     override suspend fun deleteCity(favouriteCityEntity: FavouriteCityEntity) {
-        favouriteCityDao.deleteCity(favouriteCityEntity)
+        withContext(ioDispatcher) {
+            favouriteCityDao.deleteCity(favouriteCityEntity)
+        }
     }
 }

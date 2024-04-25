@@ -7,15 +7,15 @@ import co.ke.weatherapp.ui.state.WeatherInfo
 import kotlinx.coroutines.flow.Flow
 
 interface WeatherRepository {
-    suspend fun getCurrentWeather(
+    fun getCurrentWeather(
         latitude: String, longitude: String, apiKey: String
     ): Flow<NetworkResult<CurrentWeather>>
 
-    suspend fun getWeatherForecast(
+    fun getWeatherForecast(
         latitude: String, longitude: String, apiKey: String
     ): Flow<NetworkResult<WeatherForecast>>
 
-    suspend fun getWeatherByCityName(
+    fun getWeatherByCityName(
         cityName: String, apiKey: String
     ): Flow<NetworkResult<WeatherInfo>>
 }

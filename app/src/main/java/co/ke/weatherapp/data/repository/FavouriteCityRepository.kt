@@ -7,7 +7,7 @@ interface FavouriteCityRepository {
 
     suspend fun saveFavouriteCity(favouriteCityEntity: FavouriteCityEntity)
 
-    suspend fun getFavouriteCities(): Flow<List<FavouriteCityEntity>>
+    fun getFavouriteCities(): Flow<List<FavouriteCityEntity>>
 
     suspend fun deleteCity(favouriteCityEntity: FavouriteCityEntity)
 }

@@ -7,7 +7,6 @@ import co.ke.weatherapp.data.location.LocationTracker
 import co.ke.weatherapp.data.network.utils.NetworkResult
 import co.ke.weatherapp.data.repository.FavouriteCityRepository
 import co.ke.weatherapp.data.repository.WeatherRepository
-import co.ke.weatherapp.di.IoDispatcher
 import co.ke.weatherapp.domain.WeatherType.Companion.getWeatherType
 import co.ke.weatherapp.domain.mappers.mapToCurrentWeatherDomain
 import co.ke.weatherapp.domain.mappers.mapToWeatherForecastDomain
@@ -15,9 +14,7 @@ import co.ke.weatherapp.domain.model.CurrentWeatherDomain
 import co.ke.weatherapp.domain.utils.filterFor1000h
 import co.ke.weatherapp.ui.state.WeatherInfo
 import co.ke.weatherapp.ui.state.WeatherState
-import com.google.android.libraries.places.api.net.PlacesClient
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -35,7 +32,6 @@ import javax.inject.Named
 class WeatherViewModel @Inject constructor(
     private val weatherRepository: WeatherRepository,
     private val locationTracker: LocationTracker,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
     private val favouriteCityRepository: FavouriteCityRepository,
     @Named("OpenWeatherApiKey") private val openWeatherApiKey: String,
     @Named("GoogleMapsApiKey") private val googleMapsApiKey: String
@@ -51,8 +47,7 @@ class WeatherViewModel @Inject constructor(
     }
 
     fun getWeatherInfo() {
-        viewModelScope.launch(ioDispatcher) {
-
+        viewModelScope.launch {
             locationTracker.getCurrentLocation()?.let { location ->
                 val latitude = location.latitude.toString()
                 val longitude = location.longitude.toString()
@@ -137,7 +132,7 @@ class WeatherViewModel @Inject constructor(
     }
 
     fun getWeatherByCityName(cityName: String) {
-        viewModelScope.launch(ioDispatcher) {
+        viewModelScope.launch {
             weatherRepository.getWeatherByCityName(cityName, openWeatherApiKey).collect { result ->
                 when (result) {
                     is NetworkResult.Success -> {
@@ -190,7 +185,7 @@ class WeatherViewModel @Inject constructor(
     }
 
     suspend fun saveFavouriteCity(favouriteCityEntity: FavouriteCityEntity) {
-        viewModelScope.launch(ioDispatcher) {
+        viewModelScope.launch {
             val currentState = _weatherState.value
             val updatedWeatherInfo = currentState.weatherInfo?.copy(
                 currentWeather = currentState.weatherInfo.currentWeather?.copy(
@@ -206,7 +201,7 @@ class WeatherViewModel @Inject constructor(
     }
 
     suspend fun deleteFavouriteCity(favouriteCityEntity: FavouriteCityEntity) {
-        viewModelScope.launch(ioDispatcher) {
+        viewModelScope.launch {
             val currentState = _weatherState.value
             val updatedWeatherInfo = currentState.weatherInfo?.copy(
                 currentWeather = currentState.weatherInfo.currentWeather?.copy(

@@ -6,13 +6,18 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
 import androidx.core.content.ContextCompat
+import co.ke.weatherapp.di.IoDispatcher
 import com.google.android.gms.location.FusedLocationProviderClient
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import kotlin.coroutines.resume
 
 class DefaultLocationTracker @Inject constructor(
-    private val locationClient: FusedLocationProviderClient, private val application: Application
+    private val locationClient: FusedLocationProviderClient,
+    private val application: Application,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : LocationTracker {
 
     override suspend fun getCurrentLocation(): Location? {
@@ -36,29 +41,29 @@ class DefaultLocationTracker @Inject constructor(
             return null
         }
 
-        return suspendCancellableCoroutine { cont ->
-            locationClient.lastLocation.apply {
-                if (isComplete) {
-                    if (isSuccessful) {
-                        cont.resume(result)
-                    } else {
+        return withContext(ioDispatcher) {
+            suspendCancellableCoroutine { cont ->
+                locationClient.lastLocation.apply {
+                    if (isComplete) {
+                        if (isSuccessful) {
+                            cont.resume(result)
+                        } else {
+                            cont.resume(null)
+                        }
+                        return@suspendCancellableCoroutine
+                    }
+                    addOnSuccessListener {
+                        cont.resume(it)
+                    }
+                    addOnFailureListener {
                         cont.resume(null)
                     }
-                    return@suspendCancellableCoroutine
+                    addOnCanceledListener {
+                        cont.cancel()
+                    }
                 }
-                addOnSuccessListener {
-                    cont.resume(it)
-                }
-                addOnFailureListener {
-                    cont.resume(null)
-                }
-                addOnCanceledListener {
-                    cont.cancel()
-                }
+
             }
-
         }
-
-
     }
 }

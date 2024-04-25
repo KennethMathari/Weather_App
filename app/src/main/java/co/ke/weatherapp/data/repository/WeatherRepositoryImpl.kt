@@ -11,8 +11,8 @@ import co.ke.weatherapp.di.IoDispatcher
 import co.ke.weatherapp.domain.WeatherType
 import co.ke.weatherapp.domain.mappers.mapToCurrentWeatherDomain
 import co.ke.weatherapp.domain.mappers.mapToWeatherForecastDomain
-import co.ke.weatherapp.ui.state.WeatherInfo
 import co.ke.weatherapp.domain.utils.filterFor1000h
+import co.ke.weatherapp.ui.state.WeatherInfo
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -25,7 +25,7 @@ class WeatherRepositoryImpl @Inject constructor(
     private val weatherApi: WeatherApi, @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : WeatherRepository {
 
-    override suspend fun getCurrentWeather(
+    override fun getCurrentWeather(
         latitude: String, longitude: String, apiKey: String
     ): Flow<NetworkResult<CurrentWeather>> {
         return flow {
@@ -41,7 +41,7 @@ class WeatherRepositoryImpl @Inject constructor(
 
     }
 
-    override suspend fun getWeatherForecast(
+    override fun getWeatherForecast(
         latitude: String, longitude: String, apiKey: String
     ): Flow<NetworkResult<WeatherForecast>> {
         return flow {
@@ -58,7 +58,7 @@ class WeatherRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun getWeatherByCityName(
+    override fun getWeatherByCityName(
         cityName: String, apiKey: String
     ): Flow<NetworkResult<WeatherInfo>> {
         return flow {
@@ -97,8 +97,8 @@ class WeatherRepositoryImpl @Inject constructor(
                 emit(NetworkResult.Error(Exception("Failed to fetch current weather")))
             }
         }.flowOn(ioDispatcher).onStart {
-                NetworkResult.Loading
-            }
+            NetworkResult.Loading
+        }
     }
 
 }
