@@ -60,7 +60,7 @@ fun CurrentWeatherSection(
     onSaveFavouriteCity: (FavouriteCityEntity?) -> Unit,
     onDeleteFavouriteCity: (FavouriteCityEntity?) -> Unit
 ) {
-    var locationInput by rememberSaveable { mutableStateOf("") }
+        var locationInput by rememberSaveable { mutableStateOf("") }
     var isFavouriteCity = weatherInfo.currentWeather?.isFavourite
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -191,7 +191,7 @@ fun CurrentWeatherSection(
                 ),
                 placeholder = {
                     Text(
-                        text = stringResource(R.string.search_city), style = TextStyle(
+                        text = stringResource(R.string.search_location), style = TextStyle(
                             color = Color.White
                         )
                     )
@@ -204,7 +204,6 @@ fun CurrentWeatherSection(
                     onSearch = {
                         onLocationSearchClicked(locationInput)
                         keyboardController?.hide()
-                        locationInput = ""
                     }
                 ),
                 shape = RoundedCornerShape(percent = 50),
@@ -215,12 +214,11 @@ fun CurrentWeatherSection(
                 trailingIcon = {
                     Icon(
                         imageVector = Icons.Outlined.Search,
-                        contentDescription = null,
+                        contentDescription = stringResource(R.string.icon_search_location),
                         tint = Color.White,
                         modifier = Modifier.clickable(onClick = {
                             onLocationSearchClicked(locationInput)
                             keyboardController?.hide()
-                            locationInput = ""
                         })
                     )
                 })
